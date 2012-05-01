@@ -1,4 +1,5 @@
 .idea
+bundler_stubs/
 *.rbc
 *.sassc
 .sass-cache
