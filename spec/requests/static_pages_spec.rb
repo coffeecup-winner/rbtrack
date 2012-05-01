@@ -1,14 +1,10 @@
 require 'spec_helper'
 
 describe "Static pages" do
+  subject { page }
   describe "Home page" do
-    it "should have the content 'rbTrack'" do
-      visit '/static_pages/home'
-      page.should have_content('rbTrack')
-    end
-    it "should have the correct title" do
-      visit '/static_pages/home'
-      page.should have_selector('title', :text => 'rbTrack')
-    end
+    before { visit root_path }
+    it { should have_selector('h1', text: 'rbTrack') }
+    it { should have_selector('title', text: 'rbTrack') }
   end
 end
