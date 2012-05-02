@@ -5,6 +5,10 @@ describe "Static pages" do
   describe "Home page" do
     before { visit root_path }
     it { should have_selector('h1', text: 'rbTrack') }
-    it { should have_selector('title', text: 'rbTrack') }
+    it { should have_selector('title', text: full_title('')) }
+    it 'Should have the correct links' do
+      click_link 'Sign up'
+      page.should have_selector('h1', text: 'Sign up')
+    end
   end
 end
