@@ -12,10 +12,15 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(name: 'Fred', email: 'fred@example.com') }
+  before { @user = User.new(name: 'Fred', email: 'fred@example.com', password: 'password',
+    password_confirmation: 'password') }
   subject { @user }
-  it { should respond_to(:name) }
-  it { should respond_to(:email) }
+  it { should respond_to :name }
+  it { should respond_to :email }
+  it { should respond_to :password_digest }
+  it { should respond_to :password }
+  it { should respond_to :password_confirmation }
+  it { should respond_to :authenticate }
   it { should be_valid }
   describe 'when name is not present' do
     before { @user.name = '' }
@@ -23,6 +28,18 @@ describe User do
   end
   describe 'when email is not present' do
     before { @user.email = '' }
+    it { should_not be_valid }
+  end
+  describe 'when password is blank' do
+    before { @user.password = @user.password_confirmation = ' ' }
+    it { should_not be_valid }
+  end
+  describe 'when confirmation does not match password' do
+    before { @user.password_confirmation = 'drowssap' }
+    it { should_not be_valid }
+  end
+  describe 'when password confirmation is nil' do
+    before { @user.password_confirmation = nil }
     it { should_not be_valid }
   end
   describe 'when name is too long' do
@@ -62,5 +79,21 @@ describe User do
     @user.should be_valid
     @user.save
     @user.email.should == 'should.be.lowercase@email.address'
+  end
+  describe 'return value of authenticate method' do
+    before { @user.save }
+    let(:found_user) { User.find_by_email(@user.email) }
+    describe 'with valid password' do
+      it { should == found_user.authenticate(@user.password) }
+    end
+    describe 'with invalid password' do
+      let(:auth_failed_user) { found_user.authenticate('drowssap') }
+      it { should_not == auth_failed_user }
+      specify { auth_failed_user.should be_false }
+    end
+  end
+  describe 'with too short password' do
+    before { @user.password = @user.password_confirmation = 'a' * 5 }
+    it { should_not be_valid }
   end
 end
