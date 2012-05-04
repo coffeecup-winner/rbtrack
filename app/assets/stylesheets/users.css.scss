@@ -1,4 +1,4 @@
-@import 'bootstrap'; //TODO: bootstrap includes as a whole here and in the custom.css.scss, remove this import
+@import 'bootstrap/mixins'; //TODO: bootstrap includes as a whole in the custom.css.scss, remove this import
 @import 'defines';
 
 /* sign up form */
@@ -9,7 +9,7 @@ input, textarea, select, .uneditable-input {
   padding: 10px;
   height: auto;
   margin-bottom: 15px;
-  @include box_sizing
+  @include box-sizing(border-box);
 }
 
 #error-explanation {
