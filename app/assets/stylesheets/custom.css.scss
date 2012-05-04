@@ -1,4 +1,5 @@
 @import 'bootstrap';
+@import 'defines';
 
 /* application-wide */
 
@@ -70,4 +71,14 @@ footer {
       margin-left: 10px;
     }
   }
+}
+
+/* debug */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+  @include box_sizing;
 }
