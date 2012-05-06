@@ -46,6 +46,18 @@ describe 'Authentication' do
           specify { response.should redirect_to(signin_path) }
         end
       end
+      describe 'when attempting to visit a protected page' do
+        before do
+          visit edit_user_path(user)
+          #redirected to sign in
+          sign_in user
+        end
+        describe 'after signing in' do
+          it 'should render the desired protected page' do
+            page.should have_selector('title', text: 'Edit profile')
+          end
+        end
+      end
     end
     describe 'as wrong user' do
       let(:user) { FactoryGirl.create :user }
