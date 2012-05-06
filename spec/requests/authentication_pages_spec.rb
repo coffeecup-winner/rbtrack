@@ -34,7 +34,7 @@ describe 'Authentication' do
     end
   end
   describe 'Authorization' do
-    describe 'for non-signed-in users' do
+    describe 'as non-signed-in user' do
       let(:user) { FactoryGirl.create :user }
       describe 'in the Users controller' do
         describe 'visiting the edit page' do
@@ -45,6 +45,22 @@ describe 'Authentication' do
           before { put user_path(user) }
           specify { response.should redirect_to(signin_path) }
         end
+      end
+    end
+    describe 'as wrong user' do
+      let(:user) { FactoryGirl.create :user }
+      let(:wrong_user) { FactoryGirl.create :user, email: 'not_fred@example.com' }
+      before do
+        visit signin_path
+        sign_in user
+      end
+      describe 'visiting Users#edit page' do
+        before { visit edit_user_path(wrong_user) }
+        it { should_not have_selector('title', 'Edit profile') }
+      end
+      describe 'submitting a PUT request to the Users#update action' do
+        before { put user_path(wrong_user) }
+        specify { response.should redirect_to(root_path) }
       end
     end
   end
