@@ -58,6 +58,20 @@ describe 'Authentication' do
           it { should have_selector('title', text: 'Sign in') }
         end
       end
+      describe 'in the Projects controller' do
+        describe 'visiting Projects#new page' do
+          before { visit new_project_path }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+        describe 'submitting to the Projects#create action' do
+          before { post projects_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+        describe 'visiting the projects index' do
+          before { visit projects_path }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+      end
       describe 'when attempting to visit a protected page' do
         before do
           visit edit_user_path(user)
@@ -69,7 +83,7 @@ describe 'Authentication' do
           end
           describe 'when signing in again' do
             before { sign_in user }
-            it 'shuld render the default (profile) page' do
+            it 'should render the default (profile) page' do
               page.should have_selector('title', text: user.name)
             end
           end
