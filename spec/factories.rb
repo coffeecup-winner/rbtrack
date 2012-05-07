@@ -9,7 +9,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :project do
+  factory :project do |project|
     name 'rbtrack'
   end
 end

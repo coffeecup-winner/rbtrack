@@ -6,9 +6,9 @@ RSpec::Matchers.define :have_alert_error do |text|
   end
 end
 
-RSpec::Matchers.define :have_alert_success do
+RSpec::Matchers.define :have_alert_success do |text|
   match do |page|
-    page.should have_selector('div.alert.alert-success')
+    page.should have_selector('div.alert.alert-success', text: text)
   end
 end
 
@@ -18,4 +18,11 @@ def sign_in(user)
   fill_in 'Password', with: user.password
   click_button 'Sign in'
   cookies[:remember_token] = user.remember_token
+end
+
+def create_project(name, user)
+  sign_in user
+  visit new_project_path
+  fill_in 'Name', with: name
+  click_button 'Create project'
 end

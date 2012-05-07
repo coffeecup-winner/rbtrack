@@ -32,7 +32,7 @@ describe 'User pages' do
         before { click_button submit }
         let(:user) { User.find_by_email('fred@example.com') }
         it { should have_selector('title', text: user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_alert_success('Welcome') }
         it { should have_link 'Sign out' }
       end
     end
@@ -42,6 +42,19 @@ describe 'User pages' do
     before { visit user_path(user) }
     it { should have_selector('h1', text: user.name) }
     it { should have_selector('title', text: user.name) }
+    describe 'projects' do
+      it { should have_selector('h2', text: 'Projects (0)') }
+      it { should have_link('Create new project', href: new_project_path) }
+      describe 'with one project' do
+        before do
+          create_project('rbtrack', user)
+          visit user_path(user)
+        end
+        let(:project) { Project.first }
+        it { should have_selector('h2', text: 'Projects (1)') }
+        it { should have_link('rbtrack', href: project_path(project)) }
+      end
+    end
   end
   describe 'Edit' do
     let(:user) { FactoryGirl.create(:user) }

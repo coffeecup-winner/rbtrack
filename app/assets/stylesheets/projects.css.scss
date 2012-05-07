@@ -1,0 +1,23 @@
+@import "_defines.scss";
+
+/* project page */
+
+.team {
+  ul {
+    margin: 0;
+    list-style: none;
+    li {
+      line-height: 32px;
+      font-size: 1.5em;
+      vertical-align: center;
+      &.owner {
+        a {
+          color: $orange;
+          &:hover {
+            color: $red;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<% provide(:title, @project.name) %>
+<h1><%= @project.name %></h1>
+<div class="row">
+  <aside class="span4">
+    <h2>Team</h2>
+    <div class="team">
+      <ul>
+        <% @project.users.each do |user| %>
+          <%= gravatar_for @project.owner, size: 32 %>
+          <% if user == @project.owner %>
+            <li class="owner"><%= link_to user.name, user %></li>
+          <% else %>
+            <li><%= link_to user.name, user %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </aside>
+</div>
