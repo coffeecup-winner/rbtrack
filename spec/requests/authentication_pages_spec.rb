@@ -14,6 +14,11 @@ describe 'Authentication' do
       before { click_button 'Sign in' }
       it { should have_selector('title', text: 'Sign in') }
       it { should have_alert_error('Invalid') }
+      it { should_not have_link('Users', text: users_path) }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out', href: signout_path) }
+      it { should have_link('Sign in', hfre: signin_path) }
       describe 'after visiting another page' do
         before { click_link 'Home' }
         it { should_not have_alert_error('Invalid') }
@@ -54,23 +59,37 @@ describe 'Authentication' do
       describe 'when attempting to visit a protected page' do
         before do
           visit edit_user_path(user)
-          #redirected to sign in
           sign_in user
         end
         describe 'after signing in' do
           it 'should render the desired protected page' do
             page.should have_selector('title', text: 'Edit profile')
           end
+          describe 'when signing in again' do
+            before { sign_in user }
+            it 'shuld render the default (profile) page' do
+              page.should have_selector('title', text: user.name)
+            end
+          end
         end
+      end
+    end
+    describe 'as signed-in user' do
+      let(:user) { FactoryGirl.create :user }
+      before() { sign_in user }
+      describe 'visiting to access Users#new page' do
+        before { visit signup_path }
+        it { should_not have_selector('h1', text: 'Sign up') }
+      end
+      describe 'submitting a POST request to the Users#create action' do
+        before { post users_path }
+        specify { response.should redirect_to(root_path) }
       end
     end
     describe 'as wrong user' do
       let(:user) { FactoryGirl.create :user }
       let(:wrong_user) { FactoryGirl.create :user, email: 'not_fred@example.com' }
-      before do
-        visit signin_path
-        sign_in user
-      end
+      before { sign_in user }
       describe 'visiting Users#edit page' do
         before { visit edit_user_path(wrong_user) }
         it { should_not have_selector('title', 'Edit profile') }
@@ -83,12 +102,20 @@ describe 'Authentication' do
     describe 'as non-admin user' do
       let(:user) { FactoryGirl.create(:user) }
       let(:non_admin) { FactoryGirl.create(:user) }
-      before do
-        visit signin_path
-        sign_in non_admin
-      end
+      before { sign_in non_admin }
       describe 'submitting a DELETE request to the Users#destroy action' do
         before { delete user_path(user) }
+        specify { response.should redirect_to(root_path) }
+      end
+    end
+    describe 'as admin user' do
+      let(:admin) { FactoryGirl.create(:admin) }
+      before { sign_in admin }
+      it 'should not be able to delete himself' do
+        expect { delete user_path(admin) }.not_to change(User, :count)
+      end
+      describe 'trying to remove himself via a DELETE request' do
+        before { delete user_path(admin) }
         specify { response.should redirect_to(root_path) }
       end
     end
