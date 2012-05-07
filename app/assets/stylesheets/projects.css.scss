@@ -21,3 +21,19 @@
     }
   }
 }
+
+/* index */
+
+.projects-list {
+  border-top: 1px solid $grayLight;
+  border-bottom: 1px solid $grayLight;
+  margin: 0;
+  list-style: none;
+  li {
+    border-bottom: 1px solid $grayLighter;
+    padding: 5px 0;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

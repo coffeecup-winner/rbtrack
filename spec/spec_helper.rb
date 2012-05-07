@@ -43,4 +43,6 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
+  User.delete_all
+  Project.delete_all
 end

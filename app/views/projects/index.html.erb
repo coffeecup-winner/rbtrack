@@ -1,0 +1,11 @@
+<% provide(:title, 'All projects') %>
+<h1>All projects</h1>
+<%= will_paginate %>
+<ul class="projects-list">
+  <% @projects.each do |project| %>
+  <li>
+    <%= link_to "#{project.name}", project %> (<%= link_to project.owner.name, project.owner %>)
+  </li>
+  <% end %>
+</ul>
+<%= will_paginate %>

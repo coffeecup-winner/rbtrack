@@ -9,7 +9,10 @@ FactoryGirl.define do
     end
   end
 
-  factory :project do |project|
-    name 'rbtrack'
+  factory :project do
+    sequence(:name) { |n| "Project #{n}" }
+    factory :project_with_owner do |project|
+      project.after_create { |p| TeamMembership.create(project: p, user: FactoryGirl.create(:user), owner: true) }
+    end
   end
 end
