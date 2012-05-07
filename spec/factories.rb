@@ -8,4 +8,8 @@ FactoryGirl.define do
       admin true
     end
   end
+
+  factory :project do
+    name 'rbtrack'
+  end
 end

@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507102425) do
+ActiveRecord::Schema.define(:version => 20120507131838) do
+
+  create_table "projects", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "team_memberships", :id => false, :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.boolean  "owner"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "team_memberships", ["owner"], :name => "index_team_memberships_on_owner"
 
   create_table "users", :force => true do |t|
     t.string   "name"
