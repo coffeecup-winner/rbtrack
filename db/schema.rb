@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507143923) do
+ActiveRecord::Schema.define(:version => 20120509152904) do
+
+  create_table "issues", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.integer  "assignee_id"
+    t.string   "subject"
+    t.text     "description"
+    t.integer  "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "issues", ["assignee_id"], :name => "index_issues_on_assignee_id"
+  add_index "issues", ["project_id"], :name => "index_issues_on_project_id"
+  add_index "issues", ["user_id"], :name => "index_issues_on_user_id"
 
   create_table "projects", :force => true do |t|
     t.string   "name"

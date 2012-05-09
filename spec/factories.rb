@@ -15,4 +15,14 @@ FactoryGirl.define do
       project.after_create { |p| TeamMembership.create(project: p, user: FactoryGirl.create(:user), owner: true) }
     end
   end
+
+  factory :issue do |issue|
+    sequence(:subject) { |n| "Subject #{n}" }
+    sequence(:description) { |n| "Description #{n}" }
+    project
+    user
+    issue.after_create do |i|
+      i.assignee = FactoryGirl.create(:user)
+    end
+  end
 end

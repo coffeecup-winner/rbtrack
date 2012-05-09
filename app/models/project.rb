@@ -1,16 +1,17 @@
 # == Schema Information
-   #
-   # Table name: projects
-   #
-   #  id         :integer         not null, primary key
-   #  name       :string(255)
-   #  created_at :datetime        not null
-   #  updated_at :datetime        not null
-   #
+#
+# Table name: projects
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
 
 class Project < ActiveRecord::Base
   has_many :team_memberships
   has_many :users, through: :team_memberships
+  has_many :issues
 
   attr_accessible :name
 

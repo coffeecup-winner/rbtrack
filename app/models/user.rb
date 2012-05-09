@@ -17,6 +17,8 @@ class User < ActiveRecord::Base
 
   has_many :team_memberships
   has_many :projects, through: :team_memberships
+  has_many :opened_issues, class_name: 'Issue'
+  has_many :assigned_issues, class_name: 'Issue', foreign_key: 'assignee_id'
 
   attr_accessible :email, :name, :password_digest, :password, :password_confirmation
   has_secure_password
