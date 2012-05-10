@@ -1,0 +1,12 @@
+<% provide(:title, 'New issue') %>
+<h1>New issue</h1>
+<%= form_for @issue do |form| %>
+  <%= render 'shared/error_messages', object: form.object %>
+  <%= form.label :project %>
+  <%= form.select :project, Project.names, { selected: @selected_project } %>
+  <%= form.label :subject %>
+  <%= form.text_field :subject %>
+  <%= form.label :description %>
+  <%= form.text_area :description %>
+  <%= form.submit 'Submit new issue' %>
+<% end %>

@@ -18,7 +18,7 @@ class Issue < ActiveRecord::Base
   belongs_to :user
   belongs_to :assignee, class_name: 'User'
 
-  attr_accessible :description, :status, :subject
+  attr_accessible :description, :status, :subject, :project_id
 
   validates :subject, presence: true, length: { minimum: 8 }
   validates :project_id, presence: true

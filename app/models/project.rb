@@ -20,4 +20,8 @@ class Project < ActiveRecord::Base
   def owner
     @owner ||= team_memberships.find_by_owner(true).user
   end
+
+  def self.names
+    Project.all.map &:name
+  end
 end

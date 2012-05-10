@@ -3,6 +3,7 @@ Rbtrack::Application.routes.draw do
   resources :users
   resources :projects, only: [:new, :create, :show, :index]
   resources :sessions, only: [:new, :create, :destroy]
+  resources :issues, except: :index
   match '/signup', to: 'users#new'
   match '/signin', to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
