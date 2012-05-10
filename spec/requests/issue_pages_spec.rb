@@ -139,4 +139,14 @@ describe 'Issues' do
       it { should have_content('abc') }
     end
   end
+  describe 'Issues list on the project page' do
+    let!(:project) { FactoryGirl.create(:project_with_owner) }
+    let!(:issue) { FactoryGirl.create(:issue, project: project) }
+    before do
+      sign_in project.owner
+      visit project_path(project)
+    end
+    it { should have_content(issue.id) }
+    it { should have_link(issue.subject, href: issue_path(issue)) }
+  end
 end

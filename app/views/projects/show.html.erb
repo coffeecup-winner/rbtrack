@@ -1,9 +1,9 @@
 <% provide(:title, @project.name) %>
 <h1><%= @project.name %></h1>
-<div class="row">
+<div class="row-fluid">
   <aside class="span4">
     <h2>Team</h2>
-    <div class="team">
+    <div id="team">
       <ul>
         <% @project.users.each do |user| %>
           <%= gravatar_for @project.owner, size: 32 %>
@@ -16,4 +16,14 @@
       </ul>
     </div>
   </aside>
+  <section class="span8">
+    <h2>Issues</h2>
+    <div id="issues-list">
+      <ul>
+        <% @project.issues.each do |issue| %>
+          <li><span class="id">#<%= issue.id %></span> <%= link_to issue.subject, issue %></li>
+        <% end %>
+      </ul>
+    </div>
+  </section>
 </div>

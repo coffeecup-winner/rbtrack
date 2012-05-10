@@ -1,7 +1,15 @@
+@import '_defines.scss';
 
 /* issue page */
 
-#issue {
-  #project { }
-  #user { }
+#issues-list {
+  ul {
+    margin: 0;
+    list-style: none;
+    li {
+      .id {
+        color: $grayLight;
+      }
+    }
+  }
 }
