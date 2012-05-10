@@ -1,4 +1,8 @@
 class IssuesController < ApplicationController
+  before_filter :signed_in_user, except: :show
+  before_filter :correct_user, only: [:edit, :update]
+  before_filter :admin_user, only: :destroy
+
   def new
     @issue = Issue.new
     @selected_project = ''
@@ -15,7 +19,6 @@ class IssuesController < ApplicationController
     @issue = Issue.new(issue_info)
     @issue.user = current_user
     if @issue.save
-      #flash[:success] = "#{@issue.project.name} issue: #{@issue.subject} has been created."
       redirect_to @issue
     else
       render :new
@@ -57,5 +60,13 @@ private
     issue_info[:project_id] = project.nil? ? -1 : project.id
     issue_info.delete(:project)
     issue_info
+  end
+  def correct_user
+    @issue = Issue.find(params[:id])
+    if params[:close]
+      redirect_to(root_path) unless current_user?(@issue.user) || current_user.admin?
+    else
+      redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?
+    end
   end
 end

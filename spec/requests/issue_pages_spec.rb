@@ -9,7 +9,7 @@ describe 'Issues' do
       sign_in user
       visit new_issue_path
     end
-    it { should have_selector('title', text: 'New issue') }
+    it { should have_title('New issue') }
     it { should have_selector('h1', text: 'New issue') }
     describe 'with invalid information' do
       it 'should not create an issue' do
@@ -17,7 +17,7 @@ describe 'Issues' do
       end
       describe 'error messages' do
         before { click_button submit }
-        it { should have_selector('title', text: 'New issue') }
+        it { should have_title('New issue') }
         it { should have_content('error') }
       end
     end
@@ -34,7 +34,7 @@ describe 'Issues' do
       describe 'after saving the issue' do
         before { click_button submit }
         let(:issue) { Issue.find_by_subject('a' * 8) }
-        it { should have_selector('title', text: issue.subject) }
+        it { should have_title(issue.subject) }
         specify { issue.project.should == project }
       end
     end
@@ -42,8 +42,8 @@ describe 'Issues' do
   describe 'Issue page' do
     let!(:issue) { FactoryGirl.create(:issue) }
     before { visit issue_path(issue) }
-    it { should have_selector('title', text: issue.project.name) }
-    it { should have_selector('title', text: issue.subject) }
+    it { should have_title(issue.project.name) }
+    it { should have_title(issue.subject) }
     it { should have_link(issue.project.name, href: project_path(issue.project)) }
     it { should have_link(issue.user.name, href: user_path(issue.user)) }
     it { should have_content(issue.subject) }
@@ -66,7 +66,7 @@ describe 'Issues' do
       it { should have_link('Close issue', href: issue_path(issue, close: true), method: :put) }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
-        it { should have_selector('title', text: "Edit issue ##{issue.id}") }
+        it { should have_title("Edit issue ##{issue.id}") }
       end
       describe 'close issue' do
         before do
@@ -75,7 +75,7 @@ describe 'Issues' do
           visit issue_path(issue)
           click_link 'Close issue'
         end
-        it { should have_selector('title', text: issue.subject) }
+        it { should have_title(issue.subject) }
         it { should have_alert_success }
         specify { Issue.find_by_subject(issue.subject).status.should == 0 }
       end
@@ -90,7 +90,7 @@ describe 'Issues' do
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
-        it { should have_selector('title', text: "Edit issue ##{issue.id}") }
+        it { should have_title("Edit issue ##{issue.id}") }
       end
     end
     describe 'as admin' do
@@ -106,15 +106,18 @@ describe 'Issues' do
         describe 'after removing' do
           before { click_link 'Remove issue' }
           it { should have_alert_success }
-          it { should have_selector('title', text: issue.project.name) }
+          it { should have_title(issue.project.name) }
         end
       end
     end
   end
   describe 'Edit page' do
     let!(:issue) { FactoryGirl.create(:issue) }
-    before { visit edit_issue_path(issue) }
-    it { should have_selector('title', text: "Edit issue ##{issue.id}") }
+    before do
+      sign_in issue.user
+      visit edit_issue_path(issue)
+    end
+    it { should have_title("Edit issue ##{issue.id}") }
     it { should have_link(issue.project.name, href: project_path(issue.project)) }
     it { should have_link(issue.user.name, href: user_path(issue.user)) }
     describe 'fill in with invalid information' do
@@ -123,7 +126,7 @@ describe 'Issues' do
         click_button 'Save changes'
       end
       it { should have_alert_error }
-      it { should have_selector('title', text: "Edit issue ##{issue.id}") }
+      it { should have_title("Edit issue ##{issue.id}") }
     end
     describe 'fill in with valid information' do
       before do
@@ -132,7 +135,7 @@ describe 'Issues' do
         click_button 'Save changes'
       end
       it { should have_alert_success }
-      it { should have_selector('title', text: 'b' * 8) }
+      it { should have_title('b' * 8) }
       it { should have_content('abc') }
     end
   end

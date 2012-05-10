@@ -6,14 +6,14 @@ describe 'User pages' do
     before { visit signup_path }
     let(:submit) { 'Create account' }
     it { should have_selector('h1', text: 'Sign up') }
-    it { should have_selector('title', text: full_title('Sign up'))}
+    it { should have_title(full_title('Sign up'))}
     describe 'with invalid information' do
       it 'should not create a user' do
         expect { click_button submit }.not_to change(User, :count)
       end
       describe 'error messages' do
         before { click_button submit }
-        it { should have_selector('title', text: 'Sign up') }
+        it { should have_title('Sign up') }
         it { should have_content('error') }
         it { should_not have_content('digest') }
       end
@@ -31,7 +31,7 @@ describe 'User pages' do
       describe 'after saving the user' do
         before { click_button submit }
         let(:user) { User.find_by_email('fred@example.com') }
-        it { should have_selector('title', text: user.name) }
+        it { should have_title(user.name) }
         it { should have_alert_success('Welcome') }
         it { should have_link 'Sign out' }
       end
@@ -41,7 +41,7 @@ describe 'User pages' do
     let(:user) { FactoryGirl.create(:user) }
     before { visit user_path(user) }
     it { should have_selector('h1', text: user.name) }
-    it { should have_selector('title', text: user.name) }
+    it { should have_title(user.name) }
     describe 'projects' do
       it { should have_selector('h2', text: 'Projects (0)') }
       it { should have_link('Create new project', href: new_project_path) }
@@ -64,7 +64,7 @@ describe 'User pages' do
     }
     describe 'page' do
       it { should have_selector('h1', text: 'Update your profile') }
-      it { should have_selector('title', text: 'Edit profile') }
+      it { should have_title('Edit profile') }
       it { should have_link('Change', href: 'http://gravatar.com/emails') }
     end
     describe 'with invalid information' do
@@ -82,7 +82,7 @@ describe 'User pages' do
         click_button 'Save changes'
       end
 
-      it { should have_selector('title', text: new_name) }
+      it { should have_title(new_name) }
       it { should have_alert_success }
       it { should have_link('Sign out', href: signout_path) }
       describe 'updated user' do
@@ -98,7 +98,7 @@ describe 'User pages' do
       sign_in FactoryGirl.create(:user)
       visit users_path
     end
-    it { should have_selector('title', text: 'All users') }
+    it { should have_title('All users') }
     describe 'pagination' do
       before(:all) { 50.times { FactoryGirl.create(:user) } }
       after(:all) { User.delete_all }

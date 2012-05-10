@@ -5,10 +5,25 @@ RSpec::Matchers.define :have_alert_error do |text|
     page.should have_selector('div.alert.alert-error', text: text)
   end
 end
-
 RSpec::Matchers.define :have_alert_success do |text|
   match do |page|
     page.should have_selector('div.alert.alert-success', text: text)
+  end
+end
+RSpec::Matchers.define :have_title do |text|
+  match do |page|
+    page.should have_selector('title', text: text)
+  end
+end
+RSpec::Matchers.define :have_header do |text|
+  match do |page|
+    page.should have_selector('h1', text: text)
+  end
+end
+RSpec::Matchers.define :have_title_and_header do |text|
+  match do |page|
+    page.should have_title(text)
+    page.should have_header(text)
   end
 end
 
