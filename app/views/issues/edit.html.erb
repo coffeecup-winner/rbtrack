@@ -1,0 +1,26 @@
+<% provide(:title, "Edit issue ##{@issue.id}") %>
+<div id="issue">
+  <div class="row">
+    <div class="span6">
+      <span id="project">Project: <%= link_to @issue.project.name, @issue.project %></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <span id="user">User: <%= link_to @issue.user.name, @issue.user %></span>
+    </div>
+  </div>
+  <div></div>
+  <div class="row">
+    <div class="span12">
+      <%= form_for @issue do |form| %>
+        <%= render 'shared/error_messages', object: form.object %>
+        <%= form.label :subject %>
+        <%= form.text_field :subject %>
+        <%= form.label :description %>
+        <%= form.text_area :description %>
+        <%= form.submit 'Save changes', class: 'btn btn-large btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -25,10 +25,29 @@ class IssuesController < ApplicationController
     @issue = Issue.find(params[:id])
   end
   def edit
+    @issue = Issue.find(params[:id])
   end
   def update
+    @issue = Issue.find(params[:id])
+    if params[:close]
+      @issue.status = 0
+      @issue.save!
+      flash[:success] = 'Issue was closed.'
+      redirect_to @issue
+    else
+      if @issue.update_attributes(params[:issue])
+        flash[:success] = 'Issue was successfully updated.'
+        redirect_to @issue
+      else
+        render :edit
+      end
+    end
   end
-  def delete
+  def destroy
+    issue = Issue.find(params[:id])
+    issue.destroy
+    flash[:success] = "Issue ##{issue.id}: #{issue.subject} have been removed."
+    redirect_to issue.project
   end
 
 private

@@ -1,1 +1,33 @@
 <% provide(:title, "#{@issue.project.name} # #{@issue.subject}") %>
+<div id="issue">
+  <div class="row">
+    <div class="span6">
+      <span id="project">Project: <%= link_to @issue.project.name, @issue.project %></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <span id="user">User: <%= link_to @issue.user.name, @issue.user %></span>
+    </div>
+  </div>
+  <div></div>
+  <div class="row">
+    <div class="span12">
+      Subject: <%= @issue.subject %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      Description:
+      <p><%= @issue.description %></p>
+    </div>
+  </div>
+  <% @is_admin = !current_user.nil? && current_user.admin? %>
+  <% if @issue.user == current_user || @issue.project.users.include?(current_user) || @is_admin %>
+    <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
+    <%= link_to 'Close issue', issue_path(@issue, close: true), class: 'btn btn-danger', method: :put %>
+  <% end %>
+  <% if @is_admin %>
+    <%= link_to 'Remove issue', issue_path(@issue), class: 'btn btn-danger', method: :delete %>
+  <% end %>
+</div>
