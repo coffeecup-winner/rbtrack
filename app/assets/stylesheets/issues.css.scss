@@ -9,6 +9,10 @@
     li {
       .id {
         color: $grayLight;
+        float: left;
+        width: 4em;
+        text-align: right;
+        margin-right: 0.35em;
       }
     }
   }
