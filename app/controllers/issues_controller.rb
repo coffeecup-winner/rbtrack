@@ -36,7 +36,10 @@ class IssuesController < ApplicationController
       set_issue_status(Status::CLOSED)
       redirect_to @issue
     elsif params[:reopen]
-      set_issue_status(Status::ACTIVE, close = false)
+      set_issue_status(Status::ACTIVE, action = 'reopened')
+      redirect_to @issue
+    elsif params[:confirm]
+      set_issue_status(Status::TO_BE_FIXED, action = 'confirmed')
       redirect_to @issue
     elsif params[:fixed]
       set_issue_status(Status::FIXED)
@@ -64,10 +67,10 @@ class IssuesController < ApplicationController
   end
 
 private
-  def set_issue_status(status, close = true)
+  def set_issue_status(status, action = 'closed')
     @issue.status = status
     @issue.save!
-    flash[:success] = "Issue was #{close ? 'closed' : 'reopened'}."
+    flash[:success] = "Issue was #{action}."
   end
 
   def get_issue_info
@@ -82,7 +85,7 @@ private
     if params[:close]
       redirect_to(root_path) unless current_user?(@issue.user) || current_user.admin?
     end
-    if params[:fixed] || params[:by_design] || params[:wont_fix]
+    if params[:confirm] || params[:fixed] || params[:by_design] || params[:wont_fix]
       redirect_to(root_path) unless @issue.project.users.include?(current_user)
     end
     redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?

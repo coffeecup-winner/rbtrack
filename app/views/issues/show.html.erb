@@ -24,17 +24,22 @@
     </div>
   </div>
   <div id="issue-actions">
-    <div id="team-members-actions">
-      <% if @issue.project.users.include?(current_user) %>
-        <span>Close as </span>
-        <%= link_to 'Fixed', issue_path(@issue, fixed: true), class: 'btn btn-success', method: :put %>
-        <%= link_to 'By design', issue_path(@issue, by_design: true), class: 'btn btn-warning', method: :put %>
-        <%= link_to 'Won\'t fix', issue_path(@issue, wont_fix: true), class: 'btn btn-danger', method: :put %>
-      <% end %>
-    </div>
     <div>
-      <% @is_admin = !current_user.nil? && current_user.admin? %>
-      <% if @issue.user == current_user || @issue.project.users.include?(current_user) || @is_admin %>
+      <% if @issue.project.users.include?(current_user) %>
+        <% if @issue.status == Status::ACTIVE %>
+          <%= link_to 'Confirm issue', issue_path(@issue, confirm: true), class: 'btn btn-success', method: :put %>
+        <% end %>
+        <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
+        <% if @issue.closed? %>
+          <span> or </span>
+          <%= link_to 'Reopen issue', issue_path(@issue, reopen: true), class: 'btn btn-primary', method: :put %>
+        <% else %>
+          <span> or close as </span>
+          <%= link_to 'Fixed', issue_path(@issue, fixed: true), class: 'btn btn-success', method: :put %>
+          <%= link_to 'By design', issue_path(@issue, by_design: true), class: 'btn btn-warning', method: :put %>
+          <%= link_to 'Won\'t fix', issue_path(@issue, wont_fix: true), class: 'btn btn-danger', method: :put %>
+        <% end %>
+      <% elsif @issue.user == current_user || @issue.project.users.include?(current_user) %>
         <% if @issue.closed? %>
           <%= link_to 'Reopen issue', issue_path(@issue, reopen: true), class: 'btn btn-primary', method: :put %>
         <% else %>
@@ -42,7 +47,10 @@
           <%= link_to 'Close issue', issue_path(@issue, close: true), class: 'btn btn-danger', method: :put %>
         <% end %>
       <% end %>
-      <% if @is_admin %>
+    </div>
+    <div>
+      <% if !current_user.nil? && current_user.admin? %>
+        <span>as admin </span>
         <%= link_to 'Remove issue', issue_path(@issue), class: 'btn btn-danger', method: :delete %>
       <% end %>
     </div>

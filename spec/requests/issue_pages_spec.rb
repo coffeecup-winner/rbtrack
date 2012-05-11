@@ -55,6 +55,7 @@ describe 'Issues' do
         sign_in FactoryGirl.create(:user)
         visit issue_path(issue)
       end
+      it { should_not have_link('Confirm issue') }
       it { should_not have_link('Edit issue') }
       it { should_not have_link('Close issue') }
       it { should_not have_link('Reopen issue') }
@@ -68,6 +69,7 @@ describe 'Issues' do
         sign_in issue.user
         visit issue_path(issue)
       end
+      it { should_not have_link('Confirm issue') }
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
       it { should have_link('Close issue', href: issue_path(issue, close: true), method: :put) }
       it { should_not have_link('Reopen issue') }
@@ -105,6 +107,7 @@ describe 'Issues' do
         sign_in team_member
         visit issue_path(issue)
       end
+      it { should have_link('Confirm issue') }
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
       it { should have_link('Fixed') }
       it { should have_link('By design') }
@@ -113,12 +116,27 @@ describe 'Issues' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
       end
+      describe 'confirm issue' do
+        before do
+          click_link 'Confirm issue'
+          issue.reload
+        end
+        it { should have_title(issue.subject) }
+        it { should_not have_link('Confirm issue') }
+        specify { issue.status.should == Status::TO_BE_FIXED }
+      end
       describe 'set status: fixed' do
         before do
           click_link 'Fixed'
           issue.reload
         end
         it { should have_title(issue.subject) }
+        it { should_not have_link('Confirm issue') }
+        it { should_not have_content('close as') }
+        it { should_not have_link('Fixed') }
+        it { should_not have_link('By design') }
+        it { should_not have_link('Won\'t fix') }
+        it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::FIXED }
       end
       describe 'set status: won\'t fix' do
@@ -127,6 +145,12 @@ describe 'Issues' do
           issue.reload
         end
         it { should have_title(issue.subject) }
+        it { should_not have_link('Confirm issue') }
+        it { should_not have_content('close as') }
+        it { should_not have_link('Fixed') }
+        it { should_not have_link('By design') }
+        it { should_not have_link('Won\'t fix') }
+        it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::WONT_FIX }
       end
       describe 'set status: by design' do
@@ -135,6 +159,12 @@ describe 'Issues' do
           issue.reload
         end
         it { should have_title(issue.subject) }
+        it { should_not have_link('Confirm issue') }
+        it { should_not have_content('close as') }
+        it { should_not have_link('Fixed') }
+        it { should_not have_link('By design') }
+        it { should_not have_link('Won\'t fix') }
+        it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::BY_DESIGN }
       end
     end
@@ -144,6 +174,7 @@ describe 'Issues' do
         visit issue_path(issue)
       end
       it { should have_link('Remove issue', href: issue_path(issue), method: :delete) }
+      it { should_not have_link('Confirm issue') }
       it { should_not have_link('Fixed') }
       it { should_not have_link('By design') }
       it { should_not have_link('Won\'t fix') }

@@ -167,6 +167,10 @@ describe 'Authentication' do
             before { put issue_path(issue) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
+          describe 'submitting to the Issues#update action, confirm: true' do
+            before { put issue_path(issue, confirm: true) }
+            specify { response.should redirect_to(issue_path(issue)) }
+          end
           describe 'submitting to the Issues#update action, close: true' do
             before { put issue_path(issue, close: true) }
             specify { response.should redirect_to(root_path) }
@@ -193,6 +197,10 @@ describe 'Authentication' do
           describe 'submitting to the Issues#update action' do
             before { put issue_path(issue) }
             specify { response.should redirect_to(issue_path(issue)) }
+          end
+          describe 'submitting to the Issues#update action, confirm: true' do
+            before { put issue_path(issue, confirm: true) }
+            specify { response.should redirect_to(root_path) }
           end
           describe 'submitting to the Issues#update action, close: true' do
             before { put issue_path(issue, close: true) }
