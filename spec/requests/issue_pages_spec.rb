@@ -161,4 +161,23 @@ describe 'Issues' do
     it { should have_content(issue.id) }
     it { should have_link(issue.subject, href: issue_path(issue)) }
   end
+  describe 'links from other pages' do
+    before { sign_in FactoryGirl.create(:user) }
+    describe 'Report new issue from project page' do
+      let!(:project) { FactoryGirl.create(:project_with_owner) }
+      before do
+        visit project_path(project)
+        click_link 'Report an issue'
+      end
+      it { should have_title('New issue') }
+      it { should have_select('Project', selected: project.name) }
+    end
+    describe 'Report new issue from home page' do
+      before do
+        visit root_path
+        click_link 'Report an issue'
+      end
+      it { should have_title('New issue') }
+    end
+  end
 end

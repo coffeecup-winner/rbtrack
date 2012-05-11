@@ -1,7 +1,9 @@
 <div class="center hero-unit">
   <h1>rbTrack</h1>
   <h2>Currently tracking 0 issues in <%= Project.count %> projects.</h2>
-  <% unless signed_in? %>
+  <% if signed_in? %>
+    <%= link_to 'Report an issue', new_issue_path, class: 'btn btn-large btn-primary' %>
+  <% else %>
     <%= link_to 'Sign up', signup_path, class: 'btn btn-large btn-primary' %>
   <% end %>
 </div>
