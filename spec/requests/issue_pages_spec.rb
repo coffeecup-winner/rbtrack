@@ -161,8 +161,19 @@ describe 'Issues' do
     it { should have_content(issue.id) }
     it { should have_link(issue.subject, href: issue_path(issue)) }
   end
+  describe 'Issues list on the user page' do
+    let!(:project) { FactoryGirl.create(:project_with_owner) }
+    let!(:issue) { FactoryGirl.create(:issue, project: project, user: user) }
+    before do
+      sign_in user
+      visit user_path(user)
+    end
+    it { should have_content(issue.id) }
+    it { should have_link(issue.subject, href: issue_path(issue)) }
+    it { should have_link(issue.project.name, href: project_path(project)) }
+  end
   describe 'links from other pages' do
-    before { sign_in FactoryGirl.create(:user) }
+    before { sign_in user }
     describe 'Report new issue from project page' do
       let!(:project) { FactoryGirl.create(:project_with_owner) }
       before do
@@ -175,6 +186,13 @@ describe 'Issues' do
     describe 'Report new issue from home page' do
       before do
         visit root_path
+        click_link 'Report an issue'
+      end
+      it { should have_title('New issue') }
+    end
+    describe 'Report new issue from user page' do
+      before do
+        visit user_path(user)
         click_link 'Report an issue'
       end
       it { should have_title('New issue') }

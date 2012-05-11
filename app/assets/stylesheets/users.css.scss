@@ -48,32 +48,33 @@ aside {
   }
 }
 
-.projects {
-  h2 {
-    float: left;
-    span {
-      color: $grayLight;
-    }
-  }
+#projects-list {
+  h2 { float: left; }
   .btn { float: right; }
   div.list {
     clear: both;
     border-top: 1px solid $grayLight;
     border-bottom: 1px solid $grayLight;
     margin: 10px 0;
-    padding: 5px 0;
     ul {
       list-style: none;
       margin: 0;
       li {
         border-bottom: 1px solid $grayLighter;
         padding: 5px 0;
-        font-size: 1.5em;
         &:last-child {
           border-bottom: none;
         }
       }
     }
+  }
+}
+
+#opened-issues {
+  h2 { float: left; }
+  .btn { float: right; }
+  div.list {
+    clear: both;
   }
 }
 

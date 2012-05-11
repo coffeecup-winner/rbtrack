@@ -9,9 +9,9 @@
     </section>
   </aside>
   <div class="span8">
-    <section class="projects">
+    <section id="projects-list">
       <div>
-        <h2>Projects <%= content_tag :span, "(#{@user.projects.count})" %></h2>
+        <h2>Projects <%= content_tag :span, "(#{@user.projects.count})", class: 'count' %></h2>
         <%= link_to 'Create new project', new_project_path, class:'btn btn-primary' %>
       </div>
       <div class="list">
@@ -20,6 +20,19 @@
               <li><%= link_to project.name, project %></li>
             <% end %>
           </ul>
+      </div>
+    </section>
+    <section id="opened-issues">
+      <div>
+        <h2>Reported issues <%= content_tag :span, "(#{@user.opened_issues.count})", class: 'count' %></h2>
+        <%= link_to 'Report an issue', new_issue_path, class:'btn btn-primary' %>
+      </div>
+      <div id="issues-list" class="list">
+        <ul>
+          <% @user.opened_issues.each do |issue| %>
+            <li><span class="id">#<%= issue.id %></span> <%= link_to issue.subject, issue %> (<%= link_to issue.project.name, issue.project %>)</li>
+          <% end %>
+        </ul>
       </div>
     </section>
   </div>
