@@ -171,6 +171,18 @@ describe 'Authentication' do
             before { put issue_path(issue, close: true) }
             specify { response.should redirect_to(root_path) }
           end
+          describe 'submitting to the Issues#update action, fixed: true' do
+            before { put issue_path(issue, fixed: true) }
+            specify { response.should redirect_to(issue_path(issue)) }
+          end
+          describe 'submitting to the Issues#update action, by_design: true' do
+            before { put issue_path(issue, by_design: true) }
+            specify { response.should redirect_to(issue_path(issue)) }
+          end
+          describe 'submitting to the Issues#update action, wont_fix: true' do
+            before { put issue_path(issue, wont_fix: true) }
+            specify { response.should redirect_to(issue_path(issue)) }
+          end
           describe 'submitting to the Issues#destroy action' do
             before { delete issue_path(issue) }
             specify { response.should redirect_to(root_path) }
@@ -185,6 +197,18 @@ describe 'Authentication' do
           describe 'submitting to the Issues#update action, close: true' do
             before { put issue_path(issue, close: true) }
             specify { response.should redirect_to(issue_path(issue)) }
+          end
+          describe 'submitting to the Issues#update action, fixed: true' do
+            before { put issue_path(issue, fixed: true) }
+            specify { response.should redirect_to(root_path) }
+          end
+          describe 'submitting to the Issues#update action, by_design: true' do
+            before { put issue_path(issue, by_design: true) }
+            specify { response.should redirect_to(root_path) }
+          end
+          describe 'submitting to the Issues#update action, wont_fix: true' do
+            before { put issue_path(issue, wont_fix: true) }
+            specify { response.should redirect_to(root_path) }
           end
         end
         describe 'as the admin' do

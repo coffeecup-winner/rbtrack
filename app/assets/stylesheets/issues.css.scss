@@ -2,9 +2,14 @@
 
 /* issue page */
 
-h1 .id {
+h1 #id {
   color: $grayLight;
+}
 
+#issue-actions {
+  #team-members-actions {
+    margin: 5px 0;
+  }
 }
 
 /* issues-list style */

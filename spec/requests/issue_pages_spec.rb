@@ -59,6 +59,9 @@ describe 'Issues' do
       it { should_not have_link('Close issue') }
       it { should_not have_link('Reopen issue') }
       it { should_not have_link('Remove issue') }
+      it { should_not have_link('Fixed') }
+      it { should_not have_link('By design') }
+      it { should_not have_link('Won\'t fix') }
     end
     describe 'as the issue opener' do
       before do
@@ -68,6 +71,9 @@ describe 'Issues' do
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
       it { should have_link('Close issue', href: issue_path(issue, close: true), method: :put) }
       it { should_not have_link('Reopen issue') }
+      it { should_not have_link('Fixed') }
+      it { should_not have_link('By design') }
+      it { should_not have_link('Won\'t fix') }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
@@ -100,9 +106,36 @@ describe 'Issues' do
         visit issue_path(issue)
       end
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
+      it { should have_link('Fixed') }
+      it { should have_link('By design') }
+      it { should have_link('Won\'t fix') }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
+      end
+      describe 'set status: fixed' do
+        before do
+          click_link 'Fixed'
+          issue.reload
+        end
+        it { should have_title(issue.subject) }
+        specify { issue.status.should == Status::FIXED }
+      end
+      describe 'set status: won\'t fix' do
+        before do
+          click_link 'Won\'t fix'
+          issue.reload
+        end
+        it { should have_title(issue.subject) }
+        specify { issue.status.should == Status::WONT_FIX }
+      end
+      describe 'set status: by design' do
+        before do
+          click_link 'By design'
+          issue.reload
+        end
+        it { should have_title(issue.subject) }
+        specify { issue.status.should == Status::BY_DESIGN }
       end
     end
     describe 'as admin' do
@@ -111,6 +144,9 @@ describe 'Issues' do
         visit issue_path(issue)
       end
       it { should have_link('Remove issue', href: issue_path(issue), method: :delete) }
+      it { should_not have_link('Fixed') }
+      it { should_not have_link('By design') }
+      it { should_not have_link('Won\'t fix') }
       describe 'remove issue' do
         it 'should remove issue' do
           expect { click_link 'Remove issue' }.to change(Issue, :count).by(-1)

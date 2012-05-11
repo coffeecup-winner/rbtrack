@@ -33,14 +33,19 @@ class IssuesController < ApplicationController
   def update
     @issue = Issue.find(params[:id])
     if params[:close]
-      @issue.status = Status::CLOSED
-      @issue.save!
-      flash[:success] = 'Issue was closed.'
+      set_issue_status(Status::CLOSED)
       redirect_to @issue
     elsif params[:reopen]
-      @issue.status = Status::ACTIVE
-      @issue.save!
-      flash[:success] = 'Issue was reopened.'
+      set_issue_status(Status::ACTIVE, close = false)
+      redirect_to @issue
+    elsif params[:fixed]
+      set_issue_status(Status::FIXED)
+      redirect_to @issue
+    elsif params[:by_design]
+      set_issue_status(Status::BY_DESIGN)
+      redirect_to @issue
+    elsif params[:wont_fix]
+      set_issue_status(Status::WONT_FIX)
       redirect_to @issue
     else
       if @issue.update_attributes(params[:issue])
@@ -59,6 +64,12 @@ class IssuesController < ApplicationController
   end
 
 private
+  def set_issue_status(status, close = true)
+    @issue.status = status
+    @issue.save!
+    flash[:success] = "Issue was #{close ? 'closed' : 'reopened'}."
+  end
+
   def get_issue_info
     issue_info = params[:issue]
     project = Project.find_by_name(issue_info[:project])
@@ -70,8 +81,10 @@ private
     @issue = Issue.find(params[:id])
     if params[:close]
       redirect_to(root_path) unless current_user?(@issue.user) || current_user.admin?
-    else
-      redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?
     end
+    if params[:fixed] || params[:by_design] || params[:wont_fix]
+      redirect_to(root_path) unless @issue.project.users.include?(current_user)
+    end
+    redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?
   end
 end

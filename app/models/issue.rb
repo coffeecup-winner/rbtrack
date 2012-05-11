@@ -20,6 +20,7 @@ class Status
   FIXED = 3
   DUPLICATE = 4
   WONT_FIX = 5
+  BY_DESIGN = 6
   def self.to_string(status)
     case status
       when ACTIVE then 'Active'
@@ -28,6 +29,7 @@ class Status
       when FIXED then 'Fixed'
       when DUPLICATE then 'Duplicate'
       when WONT_FIX then 'Won''t fix'
+      when BY_DESIGN then 'By design'
       else raise ArgumentError
     end
   end
