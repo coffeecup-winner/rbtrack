@@ -1,4 +1,5 @@
 <% provide(:title, "#{@issue.project.name} # #{@issue.subject}") %>
+<h1><span class="id">#<%= @issue.id %></span> <%= @issue.subject %></h1>
 <div id="issue">
   <div class="row">
     <div class="span6">
@@ -13,7 +14,7 @@
   <div></div>
   <div class="row">
     <div class="span12">
-      Subject: <%= @issue.subject %>
+      Status: <%= Status.to_string(@issue.status) %>
     </div>
   </div>
   <div class="row">
@@ -24,8 +25,12 @@
   </div>
   <% @is_admin = !current_user.nil? && current_user.admin? %>
   <% if @issue.user == current_user || @issue.project.users.include?(current_user) || @is_admin %>
-    <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
-    <%= link_to 'Close issue', issue_path(@issue, close: true), class: 'btn btn-danger', method: :put %>
+    <% if @issue.closed? %>
+      <%= link_to 'Reopen issue', issue_path(@issue, reopen: true), class: 'btn btn-primary', method: :put %>
+    <% else %>
+      <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
+      <%= link_to 'Close issue', issue_path(@issue, close: true), class: 'btn btn-danger', method: :put %>
+    <% end %>
   <% end %>
   <% if @is_admin %>
     <%= link_to 'Remove issue', issue_path(@issue), class: 'btn btn-danger', method: :delete %>

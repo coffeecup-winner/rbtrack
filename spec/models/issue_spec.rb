@@ -25,12 +25,17 @@ describe Issue do
   it { should respond_to :description }
   it { should respond_to :status }
   it { should be_valid }
+  its(:status) { should == Status::ACTIVE }
   describe 'without subject' do
     before { @issue.subject = nil }
     it { should_not be_valid }
   end
   describe 'with too short subject' do
     before { @issue.subject = 'a' * 7 }
+    it { should_not be_valid }
+  end
+describe 'with too long subject' do
+    before { @issue.subject = 'a' * 81 }
     it { should_not be_valid }
   end
   describe 'without a project' do

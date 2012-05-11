@@ -10,7 +10,7 @@ describe 'Issues' do
       visit new_issue_path
     end
     it { should have_title('New issue') }
-    it { should have_selector('h1', text: 'New issue') }
+    it { should have_header('New issue') }
     describe 'with invalid information' do
       it 'should not create an issue' do
         expect { click_button submit }.not_to change(Issue, :count)
@@ -44,9 +44,11 @@ describe 'Issues' do
     before { visit issue_path(issue) }
     it { should have_title(issue.project.name) }
     it { should have_title(issue.subject) }
+    it { should have_header("##{issue.id}") }
+    it { should have_header(issue.subject) }
     it { should have_link(issue.project.name, href: project_path(issue.project)) }
     it { should have_link(issue.user.name, href: user_path(issue.user)) }
-    it { should have_content(issue.subject) }
+    it { should have_content(Status.to_string(issue.status)) }
     it { should have_content(issue.description) }
     describe 'as non-signed-in user' do
       before do
@@ -55,6 +57,7 @@ describe 'Issues' do
       end
       it { should_not have_link('Edit issue') }
       it { should_not have_link('Close issue') }
+      it { should_not have_link('Reopen issue') }
       it { should_not have_link('Remove issue') }
     end
     describe 'as the issue opener' do
@@ -64,20 +67,29 @@ describe 'Issues' do
       end
       it { should have_link('Edit issue', href: edit_issue_path(issue)) }
       it { should have_link('Close issue', href: issue_path(issue, close: true), method: :put) }
+      it { should_not have_link('Reopen issue') }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
       end
       describe 'close issue' do
         before do
-          issue.status = 1
-          issue.save
           visit issue_path(issue)
           click_link 'Close issue'
         end
         it { should have_title(issue.subject) }
         it { should have_alert_success }
-        specify { Issue.find_by_subject(issue.subject).status.should == 0 }
+        specify { Issue.find_by_subject(issue.subject).status.should == Status::CLOSED }
+        describe 'after closing' do
+          it { should_not have_link('Edit issue') }
+          it { should_not have_link('Close issue') }
+          it { should have_link('Reopen issue') }
+          describe 'reopen it' do
+            before { click_link 'Reopen issue' }
+            it { should have_title(issue.subject) }
+            specify { Issue.find_by_subject(issue.subject).status.should == Status::ACTIVE }
+          end
+        end
       end
     end
     describe 'as a member of the project team' do

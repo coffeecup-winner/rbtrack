@@ -33,9 +33,14 @@ class IssuesController < ApplicationController
   def update
     @issue = Issue.find(params[:id])
     if params[:close]
-      @issue.status = 0
+      @issue.status = Status::CLOSED
       @issue.save!
       flash[:success] = 'Issue was closed.'
+      redirect_to @issue
+    elsif params[:reopen]
+      @issue.status = Status::ACTIVE
+      @issue.save!
+      flash[:success] = 'Issue was reopened.'
       redirect_to @issue
     else
       if @issue.update_attributes(params[:issue])
