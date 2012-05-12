@@ -17,5 +17,17 @@ describe "Static pages" do
         it { should_not have_link('Sign up') }
       end
     end
+    describe 'report issue button' do
+      before { sign_in FactoryGirl.create(:user) }
+      it { should have_link('Report an issue', href: new_issue_path) }
+    end
+    describe 'counters' do
+      before do
+        3.times { FactoryGirl.create(:issue) }
+        visit root_path
+      end
+      it { should have_content('3 issues') }
+      it { should have_content('3 projects') }
+    end
   end
 end

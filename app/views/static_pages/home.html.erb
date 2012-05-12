@@ -1,6 +1,10 @@
 <div class="center hero-unit">
   <h1>rbTrack</h1>
-  <h2>Currently tracking 0 issues in <%= Project.count %> projects.</h2>
+  <%
+     @issues_count = Issue.count
+     @projects_count = Project.count
+  %>
+  <h2>Currently tracking <%= "#{pluralize @issues_count, 'issue'} in #{pluralize @projects_count, 'project'}."%></h2>
   <% if signed_in? %>
     <%= link_to 'Report an issue', new_issue_path, class: 'btn btn-large btn-primary' %>
   <% else %>
