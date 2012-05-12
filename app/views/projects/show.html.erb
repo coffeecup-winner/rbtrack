@@ -16,15 +16,7 @@
       </ul>
     </div>
   </aside>
-  <section class="span8">
-    <h2>Issues</h2>
-    <div id="issues-list">
-      <ul>
-        <% @project.issues.each do |issue| %>
-          <li><span class="id">#<%= issue.id %></span> <%= link_to issue.subject, issue %></li>
-        <% end %>
-      </ul>
-    </div>
-    <span id="new-issue"><%= link_to 'Report an issue', new_issue_path(project: @project.id), class: 'btn btn-primary' %></span>
-  </section>
+  <div class="span8">
+    <%= render 'shared/issues_list', header: 'Issues', issues: @project.issues, project_id: @project.id %>
+  </div>
 </div>

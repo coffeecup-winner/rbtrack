@@ -14,19 +14,25 @@ h1 #id {
 
 /* issues-list style */
 
-#issues-list {
-  ul {
-    border-top: 1px solid $grayLight;
-    border-bottom: 1px solid $grayLight;
-    margin: 0;
-    list-style: none;
-    li {
-      .id {
-        color: $grayLight;
-        float: left;
-        width: 4em;
-        text-align: right;
-        margin-right: 0.35em;
+
+.issues-list {
+  h2 { float: left; }
+  .btn { float: right; }
+  div.list {
+    clear: both;
+    ul {
+      border-top: 1px solid $grayLight;
+      border-bottom: 1px solid $grayLight;
+      margin: 0;
+      list-style: none;
+      li {
+        .id {
+          color: $grayLight;
+          float: left;
+          width: 4em;
+          text-align: right;
+          margin-right: 0.35em;
+        }
       }
     }
   }

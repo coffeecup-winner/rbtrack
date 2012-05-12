@@ -22,18 +22,8 @@
           </ul>
       </div>
     </section>
-    <section id="opened-issues">
-      <div>
-        <h2>Reported issues <%= content_tag :span, "(#{@user.opened_issues.count})", class: 'count' %></h2>
-        <%= link_to 'Report an issue', new_issue_path, class:'btn btn-primary' %>
-      </div>
-      <div id="issues-list" class="list">
-        <ul>
-          <% @user.opened_issues.each do |issue| %>
-            <li><span class="id">#<%= issue.id %></span> <%= link_to issue.subject, issue %> (<%= link_to issue.project.name, issue.project %>)</li>
-          <% end %>
-        </ul>
-      </div>
-    </section>
+    <div>
+      <%= render 'shared/issues_list', header: 'Reported issues', issues: @user.opened_issues, project_id: nil %>
+    </div>
   </div>
 </div>
