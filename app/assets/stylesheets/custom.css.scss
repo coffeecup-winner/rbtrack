@@ -81,12 +81,27 @@ footer {
 .tabbable {
   border-bottom: 1px $tableBorder solid;
 }
+
 .label-badge {
   padding: 1px 1px 0px !important;
   a {
-    cursor: auto;
+    cursor: help;
   }
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  /* webkit-specific */
+  .label-badge {
+    font-size: 13px !important;
+    line-height: 18px !important;
+  }
+}
+
+/* @-moz-document url-prefix() {
+  .label-badge {
+    padding: 1px 1px 0px !important;
+  }
+} */
 
 /* debug */
 
