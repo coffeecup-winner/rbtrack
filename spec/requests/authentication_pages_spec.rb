@@ -187,6 +187,10 @@ describe 'Authentication' do
             before { put issue_path(issue, wont_fix: true) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
+          describe 'submitting to the Issues#update action, set_priority' do
+            before { put issue_path(issue, set_priority: Priority::HIGH) }
+            specify { response.should redirect_to(issue_path(issue)) }
+          end
           describe 'submitting to the Issues#destroy action' do
             before { delete issue_path(issue) }
             specify { response.should redirect_to(root_path) }
@@ -218,6 +222,10 @@ describe 'Authentication' do
             before { put issue_path(issue, wont_fix: true) }
             specify { response.should redirect_to(root_path) }
           end
+          describe 'submitting to the Issues#update action, set_priority' do
+            before { put issue_path(issue, set_priority: Priority::HIGH) }
+            specify { response.should redirect_to(root_path) }
+          end
         end
         describe 'as the admin' do
           before { sign_in FactoryGirl.create(:admin) }
@@ -231,7 +239,7 @@ describe 'Authentication' do
           end
           describe 'submitting to the Issues#update action, close: true' do
             before { put issue_path(issue, close: true) }
-            specify { response.should redirect_to(issue_path(issue)) }
+            specify { response.should redirect_to(root_path) }
           end
           describe 'submitting to the Issues#destroy action' do
             before { delete issue_path(issue) }

@@ -36,6 +36,7 @@ describe 'Issues' do
         let(:issue) { Issue.find_by_subject('a' * 8) }
         it { should have_title(issue.subject) }
         specify { issue.project.should == project }
+        specify { issue.priority.should == Priority::NORMAL }
       end
     end
   end
@@ -49,6 +50,7 @@ describe 'Issues' do
     it { should have_link(issue.project.name, href: project_path(issue.project)) }
     it { should have_link(issue.user.name, href: user_path(issue.user)) }
     it { should have_content(Status.to_string(issue.status)) }
+    it { should have_content(Priority.to_string(issue.priority)) }
     it { should have_content(issue.description) }
     describe 'as non-signed-in user' do
       before do
@@ -63,6 +65,12 @@ describe 'Issues' do
       it { should_not have_link('Fixed') }
       it { should_not have_link('By design') }
       it { should_not have_link('Won\'t fix') }
+      it { should_not have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::NORMAL), href: issue_path(issue, set_priority: Priority::NORMAL), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::HIGH), href: issue_path(issue, set_priority: Priority::HIGH), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::HIGHER), href: issue_path(issue, set_priority: Priority::HIGHER), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::CRITICAL), href: issue_path(issue, set_priority: Priority::CRITICAL), method: :put) }
     end
     describe 'as the issue opener' do
       before do
@@ -76,6 +84,12 @@ describe 'Issues' do
       it { should_not have_link('Fixed') }
       it { should_not have_link('By design') }
       it { should_not have_link('Won\'t fix') }
+      it { should_not have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::NORMAL), href: issue_path(issue, set_priority: Priority::NORMAL), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::HIGH), href: issue_path(issue, set_priority: Priority::HIGH), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::HIGHER), href: issue_path(issue, set_priority: Priority::HIGHER), method: :put) }
+      it { should_not have_link(Priority.to_string(Priority::CRITICAL), href: issue_path(issue, set_priority: Priority::CRITICAL), method: :put) }
       describe 'edit issue' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
@@ -112,6 +126,21 @@ describe 'Issues' do
       it { should have_link('Fixed') }
       it { should have_link('By design') }
       it { should have_link('Won\'t fix') }
+      it { should have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
+      it { should have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
+      it { should have_link(Priority.to_string(Priority::NORMAL), href: '#') }
+      it { should have_link(Priority.to_string(Priority::HIGH), href: issue_path(issue, set_priority: Priority::HIGH), method: :put) }
+      it { should have_link(Priority.to_string(Priority::HIGHER), href: issue_path(issue, set_priority: Priority::HIGHER), method: :put) }
+      it { should have_link(Priority.to_string(Priority::CRITICAL), href: issue_path(issue, set_priority: Priority::CRITICAL), method: :put) }
+      describe 'lowest priority' do
+        before do
+          issue.priority = Priority::LOWEST
+          issue.save!
+          visit issue_path(issue)
+        end
+        it { should have_link(Priority.to_string(Priority::LOWEST), href: '#') }
+        it { should have_link(Priority.to_string(Priority::NORMAL), href: issue_path(issue, set_priority: Priority::NORMAL), method: :put) }
+      end
       describe 'edit issue' do
         before { click_link 'Edit issue' }
         it { should have_title("Edit issue ##{issue.id}") }
@@ -166,6 +195,24 @@ describe 'Issues' do
         it { should_not have_link('Won\'t fix') }
         it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::BY_DESIGN }
+      end
+      describe 'set priority' do
+        def change_priority_to(priority)
+          click_link Priority.to_string priority
+          issue.reload
+        end
+        specify { expect { change_priority_to Priority::LOWEST }.to change(issue, :priority).to(Priority::LOWEST) }
+        specify { expect { change_priority_to Priority::LOW }.to change(issue, :priority).to(Priority::LOW) }
+        specify { expect { change_priority_to Priority::HIGH }.to change(issue, :priority).to(Priority::HIGH) }
+        specify { expect { change_priority_to Priority::HIGHER }.to change(issue, :priority).to(Priority::HIGHER) }
+        specify { expect { change_priority_to Priority::CRITICAL }.to change(issue, :priority).to(Priority::CRITICAL) }
+        describe 'to normal' do
+          before do
+            issue.priority = Priority::LOWEST
+            visit issue_path(issue)
+          end
+          specify { expect { change_priority_to Priority::NORMAL }.to change(issue, :priority).to(Priority::NORMAL) }
+        end
       end
     end
     describe 'as admin' do

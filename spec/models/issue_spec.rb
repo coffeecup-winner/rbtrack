@@ -11,6 +11,7 @@
 #  status      :integer
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  priority    :integer
 #
 
 require 'spec_helper'
@@ -24,8 +25,10 @@ describe Issue do
   it { should respond_to :subject }
   it { should respond_to :description }
   it { should respond_to :status }
+  it { should respond_to :priority }
   it { should be_valid }
   its(:status) { should == Status::ACTIVE }
+  its(:priority) { should == Priority::NORMAL }
   describe 'without subject' do
     before { @issue.subject = nil }
     it { should_not be_valid }
@@ -34,7 +37,7 @@ describe Issue do
     before { @issue.subject = 'a' * 7 }
     it { should_not be_valid }
   end
-describe 'with too long subject' do
+  describe 'with too long subject' do
     before { @issue.subject = 'a' * 81 }
     it { should_not be_valid }
   end

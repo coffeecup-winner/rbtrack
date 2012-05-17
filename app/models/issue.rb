@@ -11,6 +11,7 @@
 #  status      :integer
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  priority    :integer
 #
 
 class Status
@@ -35,6 +36,29 @@ class Status
   end
 end
 
+class Priority
+  LOWEST = 0
+  LOW = 1
+  NORMAL = 2
+  HIGH = 3
+  HIGHER = 4
+  CRITICAL = 5
+  def self.to_string(priority)
+    case priority
+      when LOWEST then 'Lowest'
+      when LOW then 'Low'
+      when NORMAL then 'Normal'
+      when HIGH then 'High'
+      when HIGHER then 'Higher'
+      when CRITICAL then 'Critical'
+      else raise ArgumentError
+    end
+  end
+  def self.all
+    [LOWEST, LOW, NORMAL, HIGH, HIGHER, CRITICAL]
+  end
+end
+
 class Issue < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
@@ -46,7 +70,10 @@ class Issue < ActiveRecord::Base
   validates :project_id, presence: true
   validates :user_id, presence: true
 
-  before_create -> issue { issue.status = Status::ACTIVE }
+  before_create -> issue do
+    issue.status = Status::ACTIVE
+    issue.priority = Priority::NORMAL
+  end
 
   def closed?
     status != Status::ACTIVE && status != Status::TO_BE_FIXED

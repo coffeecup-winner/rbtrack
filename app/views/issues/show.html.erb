@@ -14,7 +14,28 @@
   <div></div>
   <div class="row">
     <div class="span12">
-      Status: <%= render 'shared/issue_badge', status: @issue.status %> <%= Status.to_string(@issue.status) %>
+      Status: <%= render 'shared/issue_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      Priority: <%= Priority.to_string @issue.priority %>
+      <% if @issue.project.users.include?(current_user) %>
+        <!-- TODO: fix layout here -->
+        <div class="btn-group">
+          <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+            Change
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <% Priority.all.each do |priority| %>
+              <li><%= link_to Priority.to_string(priority),
+                              priority == @issue.priority ? '#' : issue_path(@issue, set_priority: priority),
+                              method: :put %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="row">

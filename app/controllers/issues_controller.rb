@@ -50,6 +50,9 @@ class IssuesController < ApplicationController
     elsif params[:wont_fix]
       set_issue_status(Status::WONT_FIX)
       redirect_to @issue
+    elsif params[:set_priority]
+      set_issue_priority params[:set_priority]
+      redirect_to @issue
     else
       if @issue.update_attributes(params[:issue])
         flash[:success] = 'Issue was successfully updated.'
@@ -72,7 +75,12 @@ private
     @issue.save!
     flash[:success] = "Issue was #{action}."
   end
-
+  def set_issue_priority(priority_str)
+    priority = priority_str.to_i
+    @issue.priority = priority
+    @issue.save!
+    flash[:success] = 'Issue priority was updated.'
+  end
   def get_issue_info
     issue_info = params[:issue]
     project = Project.find_by_name(issue_info[:project])
@@ -83,7 +91,10 @@ private
   def correct_user
     @issue = Issue.find(params[:id])
     if params[:close]
-      redirect_to(root_path) unless current_user?(@issue.user) || current_user.admin?
+      redirect_to(root_path) unless current_user?(@issue.user)
+    end
+    if params[:set_priority]
+      redirect_to(root_path) unless @issue.project.users.include?(current_user)
     end
     if params[:confirm] || params[:fixed] || params[:by_design] || params[:wont_fix]
       redirect_to(root_path) unless @issue.project.users.include?(current_user)
