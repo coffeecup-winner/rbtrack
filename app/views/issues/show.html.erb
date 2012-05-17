@@ -14,13 +14,13 @@
   <div></div>
   <div class="row">
     <div class="span12">
-      Status: <%= Status.to_string(@issue.status) %>
+      Status: <%= render 'shared/issue_badge', status: @issue.status %> <%= Status.to_string(@issue.status) %>
     </div>
   </div>
   <div class="row">
     <div class="span12">
       Description:
-      <p><%= @issue.description %></p>
+      <p class="well"><%= @issue.description %></p>
     </div>
   </div>
   <div id="issue-actions">

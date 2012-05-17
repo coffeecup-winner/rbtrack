@@ -28,7 +28,7 @@ class Status
       when CLOSED then 'Closed'
       when FIXED then 'Fixed'
       when DUPLICATE then 'Duplicate'
-      when WONT_FIX then 'Won''t fix'
+      when WONT_FIX then 'Won\'t fix'
       when BY_DESIGN then 'By design'
       else raise ArgumentError
     end

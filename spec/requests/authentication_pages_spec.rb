@@ -157,7 +157,7 @@ describe 'Authentication' do
             specify { response.should redirect_to(root_path) }
           end
         end
-        describe 'as the issue''s project team member' do
+        describe 'as the issue\'s project team member' do
           before do
             team_member = FactoryGirl.create(:user)
             TeamMembership.create(project: issue.project, user: team_member)

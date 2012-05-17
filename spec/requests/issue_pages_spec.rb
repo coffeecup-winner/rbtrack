@@ -133,7 +133,7 @@ describe 'Issues' do
         it { should have_title(issue.subject) }
         it { should_not have_link('Confirm issue') }
         it { should_not have_content('close as') }
-        it { should_not have_link('Fixed') }
+        it { should_not have_link('Fixed', href: issue_path(issue, fixed: true)) }
         it { should_not have_link('By design') }
         it { should_not have_link('Won\'t fix') }
         it { should have_link('Reopen issue') }
@@ -149,7 +149,7 @@ describe 'Issues' do
         it { should_not have_content('close as') }
         it { should_not have_link('Fixed') }
         it { should_not have_link('By design') }
-        it { should_not have_link('Won\'t fix') }
+        it { should_not have_link('Won\'t fix', href: issue_path(issue, wont_fix: true)) }
         it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::WONT_FIX }
       end
@@ -162,7 +162,7 @@ describe 'Issues' do
         it { should_not have_link('Confirm issue') }
         it { should_not have_content('close as') }
         it { should_not have_link('Fixed') }
-        it { should_not have_link('By design') }
+        it { should_not have_link('By design', href: issue_path(issue, by_design: true)) }
         it { should_not have_link('Won\'t fix') }
         it { should have_link('Reopen issue') }
         specify { issue.status.should == Status::BY_DESIGN }

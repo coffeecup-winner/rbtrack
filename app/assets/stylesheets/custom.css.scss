@@ -78,9 +78,11 @@ footer {
 .count {
   color: $grayLight;
 }
-
 .tabbable {
   border-bottom: 1px $tableBorder solid;
+}
+.label-badge {
+  padding: 1px 1px 0px !important;
 }
 
 /* debug */
