@@ -48,24 +48,24 @@
     <div>
       <% if @issue.project.users.include?(current_user) %>
         <% if @issue.status == Status::ACTIVE %>
-          <%= link_to 'Confirm issue', issue_path(@issue, confirm: true), class: 'btn btn-success', method: :put %>
+          <%= link_to 'Confirm issue', issue_path(@issue, set_status: Status::TO_BE_FIXED), class: 'btn btn-success', method: :put %>
         <% end %>
         <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
         <% if @issue.closed? %>
           <span> or </span>
-          <%= link_to 'Reopen issue', issue_path(@issue, reopen: true), class: 'btn btn-primary', method: :put %>
+          <%= link_to 'Reopen issue', issue_path(@issue, set_status: Status::ACTIVE), class: 'btn btn-primary', method: :put %>
         <% else %>
           <span> or close as </span>
-          <%= link_to 'Fixed', issue_path(@issue, fixed: true), class: 'btn btn-success', method: :put %>
-          <%= link_to 'By design', issue_path(@issue, by_design: true), class: 'btn btn-warning', method: :put %>
-          <%= link_to 'Won\'t fix', issue_path(@issue, wont_fix: true), class: 'btn btn-danger', method: :put %>
+          <%= link_to 'Fixed', issue_path(@issue, set_status: Status::FIXED), class: 'btn btn-success', method: :put %>
+          <%= link_to 'By design', issue_path(@issue, set_status: Status::BY_DESIGN), class: 'btn btn-warning', method: :put %>
+          <%= link_to 'Won\'t fix', issue_path(@issue, set_status: Status::WONT_FIX), class: 'btn btn-danger', method: :put %>
         <% end %>
       <% elsif @issue.user == current_user || @issue.project.users.include?(current_user) %>
         <% if @issue.closed? %>
-          <%= link_to 'Reopen issue', issue_path(@issue, reopen: true), class: 'btn btn-primary', method: :put %>
+          <%= link_to 'Reopen issue', issue_path(@issue, set_status: Status::ACTIVE), class: 'btn btn-primary', method: :put %>
         <% else %>
           <%= link_to 'Edit issue', edit_issue_path(@issue), class: 'btn btn-primary' %>
-          <%= link_to 'Close issue', issue_path(@issue, close: true), class: 'btn btn-danger', method: :put %>
+          <%= link_to 'Close issue', issue_path(@issue, set_status: Status::CLOSED), class: 'btn btn-danger', method: :put %>
         <% end %>
       <% end %>
     </div>

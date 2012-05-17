@@ -32,23 +32,8 @@ class IssuesController < ApplicationController
   end
   def update
     @issue = Issue.find(params[:id])
-    if params[:close]
-      set_issue_status(Status::CLOSED)
-      redirect_to @issue
-    elsif params[:reopen]
-      set_issue_status(Status::ACTIVE, action = 'reopened')
-      redirect_to @issue
-    elsif params[:confirm]
-      set_issue_status(Status::TO_BE_FIXED, action = 'confirmed')
-      redirect_to @issue
-    elsif params[:fixed]
-      set_issue_status(Status::FIXED)
-      redirect_to @issue
-    elsif params[:by_design]
-      set_issue_status(Status::BY_DESIGN)
-      redirect_to @issue
-    elsif params[:wont_fix]
-      set_issue_status(Status::WONT_FIX)
+    if params[:set_status]
+      set_issue_status(params[:set_status])
       redirect_to @issue
     elsif params[:set_priority]
       set_issue_priority params[:set_priority]
@@ -70,9 +55,13 @@ class IssuesController < ApplicationController
   end
 
 private
-  def set_issue_status(status, action = 'closed')
+  def set_issue_status(status_str)
+    status = status_str.to_i
     @issue.status = status
     @issue.save!
+    action = 'closed'
+    action = 'reopened' if status == Status::ACTIVE
+    action = 'confirmed' if status == Status::TO_BE_FIXED
     flash[:success] = "Issue was #{action}."
   end
   def set_issue_priority(priority_str)
@@ -90,14 +79,16 @@ private
   end
   def correct_user
     @issue = Issue.find(params[:id])
-    if params[:close]
-      redirect_to(root_path) unless current_user?(@issue.user)
-    end
     if params[:set_priority]
       redirect_to(root_path) unless @issue.project.users.include?(current_user)
     end
-    if params[:confirm] || params[:fixed] || params[:by_design] || params[:wont_fix]
-      redirect_to(root_path) unless @issue.project.users.include?(current_user)
+    if params[:set_status]
+      status = params[:set_status].to_i
+      if status == Status::CLOSED
+        redirect_to(root_path) unless current_user?(@issue.user)
+      elsif status != Status::ACTIVE
+        redirect_to(root_path) unless @issue.project.users.include?(current_user)
+      end
     end
     redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?
   end

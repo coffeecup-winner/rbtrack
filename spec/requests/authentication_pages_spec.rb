@@ -167,24 +167,24 @@ describe 'Authentication' do
             before { put issue_path(issue) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, confirm: true' do
-            before { put issue_path(issue, confirm: true) }
+          describe 'submitting to the Issues#update action, set_status: to_be_fixed' do
+            before { put issue_path(issue, set_status: Status::TO_BE_FIXED) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, close: true' do
-            before { put issue_path(issue, close: true) }
+          describe 'submitting to the Issues#update action, set_status: closed' do
+            before { put issue_path(issue, set_status: Status::CLOSED) }
             specify { response.should redirect_to(root_path) }
           end
-          describe 'submitting to the Issues#update action, fixed: true' do
-            before { put issue_path(issue, fixed: true) }
+          describe 'submitting to the Issues#update action, set_status: fixed' do
+            before { put issue_path(issue, set_status: Status::FIXED) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, by_design: true' do
-            before { put issue_path(issue, by_design: true) }
+          describe 'submitting to the Issues#update action, set_status: by_design' do
+            before { put issue_path(issue, set_status: Status::BY_DESIGN) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, wont_fix: true' do
-            before { put issue_path(issue, wont_fix: true) }
+          describe 'submitting to the Issues#update action, set_status: wont_fix' do
+            before { put issue_path(issue, set_status: Status::WONT_FIX) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
           describe 'submitting to the Issues#update action, set_priority' do
@@ -202,24 +202,24 @@ describe 'Authentication' do
             before { put issue_path(issue) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, confirm: true' do
-            before { put issue_path(issue, confirm: true) }
+          describe 'submitting to the Issues#update action, set_status: to_be_fixed' do
+            before { put issue_path(issue, set_status: Status::TO_BE_FIXED) }
             specify { response.should redirect_to(root_path) }
           end
-          describe 'submitting to the Issues#update action, close: true' do
-            before { put issue_path(issue, close: true) }
+          describe 'submitting to the Issues#update action, set_status: closed' do
+            before { put issue_path(issue, set_status: Status::CLOSED) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, fixed: true' do
-            before { put issue_path(issue, fixed: true) }
+          describe 'submitting to the Issues#update action, set_status: fixed' do
+            before { put issue_path(issue, set_status: Status::FIXED) }
             specify { response.should redirect_to(root_path) }
           end
-          describe 'submitting to the Issues#update action, by_design: true' do
-            before { put issue_path(issue, by_design: true) }
+          describe 'submitting to the Issues#update action, set_status: by_design' do
+            before { put issue_path(issue, set_status: Status::BY_DESIGN) }
             specify { response.should redirect_to(root_path) }
           end
-          describe 'submitting to the Issues#update action, wont_fix: true' do
-            before { put issue_path(issue, wont_fix: true) }
+          describe 'submitting to the Issues#update action, set_status: wont_fix' do
+            before { put issue_path(issue, set_status: Status::WONT_FIX) }
             specify { response.should redirect_to(root_path) }
           end
           describe 'submitting to the Issues#update action, set_priority' do
@@ -237,8 +237,12 @@ describe 'Authentication' do
             before { put issue_path(issue) }
             specify { response.should redirect_to(issue_path(issue)) }
           end
-          describe 'submitting to the Issues#update action, close: true' do
-            before { put issue_path(issue, close: true) }
+          describe 'submitting to the Issues#update action, set_status' do
+            before { put issue_path(issue, set_status: Status::CLOSED) }
+            specify { response.should redirect_to(root_path) }
+          end
+          describe 'submitting to the Issues#update action, set_priority' do
+            before { put issue_path(issue, set_priority: Priority::HIGH) }
             specify { response.should redirect_to(root_path) }
           end
           describe 'submitting to the Issues#destroy action' do
