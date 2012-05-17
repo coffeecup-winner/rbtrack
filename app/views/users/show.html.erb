@@ -23,7 +23,10 @@
       </div>
     </section>
     <div>
-      <%= render 'shared/issues_list', header: 'Reported issues', issues: @user.opened_issues, project_id: nil %>
+      <%= render 'shared/issues_list',
+                 project_id: nil,
+                 issues_lists: [ { issues: @user.active_reported_issues, header: 'Active reported issues' },
+                                 { issues: @user.closed_reported_issues, header: 'Closed reported issues' } ] %>
     </div>
   </div>
 </div>

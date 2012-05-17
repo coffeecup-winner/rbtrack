@@ -32,6 +32,13 @@ class User < ActiveRecord::Base
   before_save -> user { user.email.downcase! }
   before_save :create_remember_token
 
+  def active_reported_issues
+    opened_issues.find_all { |issue| !issue.closed? }
+  end
+  def closed_reported_issues
+    opened_issues.find_all { |issue| issue.closed? }
+  end
+
 private
   def create_remember_token
     self.remember_token = SecureRandom.urlsafe_base64

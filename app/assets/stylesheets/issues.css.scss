@@ -14,17 +14,19 @@ h1 #id {
 
 /* issues-list style */
 
+.new-issue {
+  float: right;
+  margin-top: 3px;
+}
 
 .issues-list {
-  h2 { float: left; }
-  .btn { float: right; }
-  div.list {
-    clear: both;
+  .nav {
+    margin-bottom: 9px;
+  }
+  .list {
     ul {
-      border-top: 1px solid $grayLight;
-      border-bottom: 1px solid $grayLight;
-      margin: 0;
       list-style: none;
+      margin-left: 0;
       li {
         .id {
           color: $grayLight;

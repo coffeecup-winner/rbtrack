@@ -24,4 +24,11 @@ class Project < ActiveRecord::Base
   def self.names
     Project.all.map &:name
   end
+
+  def active_issues
+    issues.find_all { |issue| !issue.closed? }
+  end
+  def closed_issues
+    issues.find_all { |issue| issue.closed? }
+  end
 end

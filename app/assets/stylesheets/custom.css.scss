@@ -79,6 +79,10 @@ footer {
   color: $grayLight;
 }
 
+.tabbable {
+  border-bottom: 1px $tableBorder solid;
+}
+
 /* debug */
 
 .debug_dump {
