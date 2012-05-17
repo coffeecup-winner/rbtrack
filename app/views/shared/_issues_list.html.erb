@@ -16,7 +16,8 @@
             <ul>
               <% info[:issues].each do |issue| %>
                 <li><span class="id">#<%= issue.id %></span>
-                  <%= render 'shared/issue_badge', status: issue.status, tooltip: true %>
+                  <%= render 'shared/issue_status_badge', status: issue.status, tooltip: true %>
+                  <%= render 'shared/issue_priority_badge', priority: issue.priority, tooltip: true %>
                   <% if project_id.nil? %>
                     (<%= link_to issue.project.name, issue.project %>)
                   <% end %>

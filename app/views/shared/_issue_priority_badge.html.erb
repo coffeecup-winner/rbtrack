@@ -1,0 +1,5 @@
+<% if tooltip %>
+  <span class="label-badge <%= label_priority_class_from priority %>"><a href="#" title="<%= Priority.to_string priority %>"><i class="<%= icon_priority_class_from priority %>"></i></a></span>
+<% else %>
+  <span class="label-badge <%= label_priority_class_from priority %>"><i class="<%= icon_priority_class_from priority %>"></i></span>
+<% end %>

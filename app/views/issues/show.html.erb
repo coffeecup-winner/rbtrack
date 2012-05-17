@@ -14,12 +14,12 @@
   <div></div>
   <div class="row">
     <div class="span12">
-      Status: <%= render 'shared/issue_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %>
+      Status: <%= render 'shared/issue_status_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %>
     </div>
   </div>
   <div class="row">
     <div class="span6">
-      Priority: <%= Priority.to_string @issue.priority %>
+      Priority: <%= render 'shared/issue_priority_badge', priority: @issue.priority, tooltip: false %> <%= Priority.to_string @issue.priority %>
       <% if @issue.project.users.include?(current_user) %>
         <!-- TODO: fix layout here -->
         <div class="btn-group">

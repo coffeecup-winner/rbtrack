@@ -1,0 +1,5 @@
+<% if tooltip %>
+  <span class="label-badge <%= label_status_class_from status %>"><a href="#" title="<%= Status::to_string status %>"><i class="<%= icon_status_class_from status %>"></i></a></span>
+<% else %>
+  <span class="label-badge <%= label_status_class_from status %>"><i class="<%= icon_status_class_from status %>"></i></span>
+<% end %>
