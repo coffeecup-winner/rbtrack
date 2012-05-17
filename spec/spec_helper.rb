@@ -46,4 +46,5 @@ Spork.each_run do
   User.delete_all
   Project.delete_all
   TeamMembership.delete_all
+  Issue.delete_all
 end
