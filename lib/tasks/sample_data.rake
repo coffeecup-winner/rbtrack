@@ -35,11 +35,12 @@ namespace :db do
     Project.all.each do |project|
       count = rand(100)
       count.times do |n|
-        issue = Issue.new(subject: "Subject #{n}", description: "Description #{n}")
+        issue = Issue.new(subject: Faker::Lorem.words(num = 4).join(' '), description: "Description #{n}")
         issue.project = project
         issue.user = User.find(rand(100)+1)
         issue.save!
         issue.update_attribute(:status, rand(7))
+        issue.update_attribute(:priority, rand(6))
         issue.save!
       end
       puts "#{project.name}: #{count} issues, #{project.issues.find_all { |i| !i.closed? }.count} active"
