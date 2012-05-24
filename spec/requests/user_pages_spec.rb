@@ -39,9 +39,22 @@ describe 'User pages' do
   end
   describe 'Profile page' do
     let(:user) { FactoryGirl.create(:user) }
-    before { visit user_path(user) }
+    before do
+      sign_in user
+      visit user_path(user)
+    end
     it { should have_selector('h1', text: user.name) }
     it { should have_title(user.name) }
+    it { should have_link('Create new project', href: new_project_path) }
+    it { should have_link('Report an issue', href: new_issue_path) }
+    describe 'as other user' do
+      before do
+        sign_in FactoryGirl.create(:user)
+        visit user_path(user)
+      end
+      it { should_not have_link('Create new project') }
+      it { should_not have_link('Report an issue') }
+    end
     describe 'projects' do
       it { should have_content('Projects (0)') }
       it { should have_link('Create new project', href: new_project_path) }
