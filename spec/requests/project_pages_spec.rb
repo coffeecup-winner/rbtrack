@@ -78,7 +78,8 @@ describe 'Projects' do
       it { should have_alert_success }
       describe 'invited user' do
         before { visit project_path(project) }
-        it { should_not have_content(invited_user.name) }
+        specify { project.users.should_not include(invited_user) }
+        it { should have_content(invited_user.name) }
       end
     end
     describe 'incorrect invitations' do

@@ -1,4 +1,5 @@
 <% provide(:title, @project.name) %>
+<% @gravatar_size = 18 %>
 <h1><%= @project.name %></h1>
 <div class="row-fluid">
   <aside class="span4">
@@ -6,12 +7,14 @@
     <div id="team">
       <ul>
         <% @project.users.each do |user| %>
-          <%= gravatar_for @project.owner, size: 32 %>
           <% if user == @project.owner %>
-            <li class="owner"><%= link_to user.name, user %></li>
+            <li class="owner"><%= gravatar_for user, size: @gravatar_size %><%= link_to user.name, user %></li>
           <% else %>
-            <li><%= link_to user.name, user %></li>
+            <li><%= gravatar_for user, size: @gravatar_size %><%= link_to user.name, user %></li>
           <% end %>
+        <% end %>
+        <% @project.open_invitations.map(&:user).each do |user| %>
+          <li class="open-invitation"><%= gravatar_for user, size: @gravatar_size %><%= link_to user.name, user %> (invitation pending)</li>
         <% end %>
       </ul>
       <% if @project.users.include? current_user %>

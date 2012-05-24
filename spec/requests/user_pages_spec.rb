@@ -55,14 +55,15 @@ describe 'User pages' do
         it { should have_link('rbtrack', href: project_path(project)) }
       end
       describe 'invitations' do
-        let(:project) { FactoryGirl.create(:project_with_owner) }
+        let!(:project) { FactoryGirl.create(:project_with_owner) }
+        let!(:invitation) { TeamMembership.create(project: project, user: user) }
         before do
-          TeamMembership.create(project: project, user: user)
+          sign_in user
           visit user_path(user)
         end
         it { should have_link(project.name, href: project_path(project)) }
-        it { should have_link 'Accept' }
-        it { should have_link 'Reject' }
+        it { should have_link 'Accept', href: accept_invitation_path(id: invitation.id), method: :put }
+        it { should have_link 'Reject', href: reject_invitation_path(id: invitation.id), method: :put }
         specify { user.projects.should_not include(project) }
         describe 'accepting' do
           before { click_link 'Accept' }

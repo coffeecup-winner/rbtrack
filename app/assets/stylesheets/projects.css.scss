@@ -9,8 +9,6 @@
     border-bottom: 1px solid $tableBorder;
     li {
       margin: 5px 0;
-      line-height: 32px;
-      font-size: 1.5em;
       vertical-align: center;
       &.owner {
         a {
@@ -19,6 +17,9 @@
             color: $red;
           }
         }
+      }
+      &.open-invitation {
+        color: $grayLight;
       }
     }
   }

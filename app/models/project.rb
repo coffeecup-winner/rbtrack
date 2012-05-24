@@ -20,15 +20,16 @@ class Project < ActiveRecord::Base
   def owner
     @owner ||= team_memberships.find_by_owner(true).user
   end
-
   def self.names
     Project.all.map &:name
   end
-
   def active_issues
     issues.find_all { |issue| !issue.closed? }
   end
   def closed_issues
     issues.find_all { |issue| issue.closed? }
+  end
+  def open_invitations
+    TeamMembership.find_all_by_project_id(id).find_all { |tm| !tm.invitation_accepted? }
   end
 end
