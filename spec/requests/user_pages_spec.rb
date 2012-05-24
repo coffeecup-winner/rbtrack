@@ -54,6 +54,34 @@ describe 'User pages' do
         it { should have_content('Projects (1)') }
         it { should have_link('rbtrack', href: project_path(project)) }
       end
+      describe 'invitations' do
+        let(:project) { FactoryGirl.create(:project_with_owner) }
+        before do
+          TeamMembership.create(project: project, user: user)
+          visit user_path(user)
+        end
+        it { should have_link(project.name, href: project_path(project)) }
+        it { should have_link 'Accept' }
+        it { should have_link 'Reject' }
+        specify { user.projects.should_not include(project) }
+        describe 'accepting' do
+          before { click_link 'Accept' }
+          it { should have_alert_success }
+          it { should have_link(project.name, href: project_path(project)) }
+          it { should_not have_link 'Accept' }
+          it { should_not have_link 'Reject' }
+          specify { user.projects.should include(project) }
+        end
+        describe 'rejecting' do
+          before { click_link 'Reject' }
+          it { should have_alert }
+          it { should_not have_link(project.name, href: project_path(project)) }
+          it { should_not have_link 'Accept' }
+          it { should_not have_link 'Reject' }
+          specify { user.projects.should_not include(project) }
+          specify { TeamMembership.find_by_user_id(user.id).should be_nil }
+        end
+      end
     end
   end
   describe 'Edit' do

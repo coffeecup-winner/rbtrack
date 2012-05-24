@@ -15,7 +15,7 @@
 class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
-  has_many :team_memberships
+  has_many :team_memberships, conditions: { invitation_accepted: true }
   has_many :projects, through: :team_memberships
   has_many :opened_issues, class_name: 'Issue'
   has_many :assigned_issues, class_name: 'Issue', foreign_key: 'assignee_id'
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     opened_issues.find_all { |issue| issue.closed? }
   end
   def invitations
-    team_memberships.find_all { |tm| !tm.invitation_accepted? }
+    TeamMembership.find_all_by_user_id(id).find_all { |tm| !tm.invitation_accepted? }
   end
 
 private

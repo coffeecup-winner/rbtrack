@@ -1,5 +1,10 @@
 include ApplicationHelper
 
+RSpec::Matchers.define :have_alert do |text|
+  match do |page|
+    page.should have_selector('div.alert', text: text)
+  end
+end
 RSpec::Matchers.define :have_alert_error do |text|
   match do |page|
     page.should have_selector('div.alert.alert-error', text: text)

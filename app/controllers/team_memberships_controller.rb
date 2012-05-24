@@ -1,5 +1,5 @@
 class TeamMembershipsController < ApplicationController
-  before_filter :team_member, :invite
+  before_filter :team_member, only: :invite
 
   def invite
     email = params[:user_email]
@@ -23,6 +23,19 @@ class TeamMembershipsController < ApplicationController
       flash[:error] = 'Cannot find a user with email ' + email
     end
     redirect_to project
+  end
+  def accept_invitation
+    @team_membership = TeamMembership.find(params[:id])
+    @team_membership.update_attribute(:invitation_accepted, true)
+    flash[:success] = "Joined project #{@team_membership.project.name}"
+    redirect_to @team_membership.user
+  end
+  def reject_invitation
+    @team_membership = TeamMembership.find(params[:id])
+    @team_membership.destroy
+    #TODO inform inviter
+    flash[:alert] = "Rejected to join #{@team_membership.project.name}"
+    redirect_to @team_membership.user
   end
 
 private

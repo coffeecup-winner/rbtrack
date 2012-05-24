@@ -30,8 +30,8 @@
             <% @user.invitations.each do |invitation| %>
               <li>
                 <%= link_to invitation.project.name, invitation.project, class: 'invitation-project-link' %>
-                <%= link_to 'Accept', '#', class: 'btn btn-success invitation-action-link' %>
-                <%= link_to 'Reject', '#', class: 'btn btn-danger invitation-action-link' %>
+                <%= link_to 'Accept', accept_invitation_path(id: invitation.id), method: :put, class: 'btn btn-success invitation-action-link' %>
+                <%= link_to 'Reject', reject_invitation_path(id: invitation.id), method: :put, class: 'btn btn-danger invitation-action-link' %>
               </li>
             <% end %>
           </ul>
