@@ -38,13 +38,11 @@ class IssuesController < ApplicationController
     elsif params[:set_priority]
       set_issue_priority params[:set_priority]
       redirect_to @issue
+    elsif @issue.update_attributes(params[:issue])
+      flash[:success] = 'Issue was successfully updated.'
+      redirect_to @issue
     else
-      if @issue.update_attributes(params[:issue])
-        flash[:success] = 'Issue was successfully updated.'
-        redirect_to @issue
-      else
-        render :edit
-      end
+      render :edit
     end
   end
   def destroy

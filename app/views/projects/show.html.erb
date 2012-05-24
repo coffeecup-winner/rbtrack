@@ -14,6 +14,9 @@
           <% end %>
         <% end %>
       </ul>
+      <% if @project.users.include? current_user %>
+        <a href="#invite-user-modal" data-toggle="modal" class="btn btn-primary">Invite a user</a>
+      <% end %>
     </div>
   </aside>
   <div class="span8">
@@ -23,3 +26,27 @@
                                { issues: @project.closed_issues, header: 'Closed' } ] %>
   </div>
 </div>
+<% if @project.users.include? current_user %>
+  <!-- invite user modal -->
+  <div class="modal" id="invite-user-modal" style="display: none;">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <h3>Invite user</h3>
+    </div>
+    <div class="modal-body">
+      <%= form_tag invite_path, class: 'form-horizontal' do %>
+        <div class="control-group">
+          <%= label_tag :user_email, 'Email', class: 'control-label' %>
+          <div class="controls">
+            <%= text_field_tag :user_email %>
+            <%= hidden_field_tag :project_id, @project.id %>
+            <%= submit_tag 'Send invitation', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" onclick="$('#invite-user-modal').modal('hide')">Close</a>
+    </div>
+  </div>
+<% end %>

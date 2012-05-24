@@ -22,12 +22,16 @@ namespace :db do
     end
 
     puts header 'Projects'
-    TeamMembership.create(project: Project.create(name: 'rbtrack'), user: admin, owner: true)
+    membership = TeamMembership.new(project: Project.create(name: 'rbtrack'), user: admin, owner: true)
+    membership.invitation_accepted = true
+    membership.save!
     49.times do |n|
       name = "Project #{n}"
       project = Project.create(name: name)
       user = User.find(rand(100)+1)
-      TeamMembership.create(project: project, user: user, owner: true)
+      membership = TeamMembership.new(project: project, user: user, owner: true)
+      membership.invitation_accepted = true
+      membership.save!
       puts "#{name} (#{user.name})"
     end
 

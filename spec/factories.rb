@@ -9,10 +9,15 @@ FactoryGirl.define do
     end
   end
 
+
   factory :project do
     sequence(:name) { |n| "Project #{n}" }
     factory :project_with_owner do |project|
-      project.after_create { |p| TeamMembership.create(project: p, user: FactoryGirl.create(:user), owner: true) }
+      project.after_create do |p|
+        membership = TeamMembership.new(project: p, user: FactoryGirl.create(:user), owner: true)
+        membership.invitation_accepted = true
+        membership.save!
+      end
     end
   end
 

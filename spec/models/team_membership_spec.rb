@@ -2,11 +2,14 @@
 #
 # Table name: team_memberships
 #
-#  project_id :integer
-#  user_id    :integer
-#  owner      :boolean
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  project_id          :integer
+#  user_id             :integer
+#  owner               :boolean
+#  created_at          :datetime        not null
+#  updated_at          :datetime        not null
+#  invited_by          :integer
+#  invitation_accepted :boolean
+#  id                  :integer         not null, primary key
 #
 
 require 'spec_helper'

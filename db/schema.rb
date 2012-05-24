@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120517045450) do
+ActiveRecord::Schema.define(:version => 20120520040045) do
 
   create_table "issues", :force => true do |t|
     t.integer  "project_id"
@@ -38,12 +38,14 @@ ActiveRecord::Schema.define(:version => 20120517045450) do
 
   add_index "projects", ["name"], :name => "index_projects_on_name", :unique => true
 
-  create_table "team_memberships", :id => false, :force => true do |t|
+  create_table "team_memberships", :force => true do |t|
     t.integer  "project_id"
     t.integer  "user_id"
     t.boolean  "owner"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "invited_by"
+    t.boolean  "invitation_accepted"
   end
 
   add_index "team_memberships", ["owner"], :name => "index_team_memberships_on_owner"

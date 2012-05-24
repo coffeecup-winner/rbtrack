@@ -117,7 +117,9 @@ describe 'Issues' do
     describe 'as a member of the project team' do
       before do
         team_member = FactoryGirl.create(:user)
-        TeamMembership.create(project: issue.project, user: team_member)
+        membership = TeamMembership.new(project: issue.project, user: team_member)
+        membership.invitation_accepted = true
+        membership.save!
         sign_in team_member
         visit issue_path(issue)
       end

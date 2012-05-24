@@ -9,7 +9,7 @@
 #
 
 class Project < ActiveRecord::Base
-  has_many :team_memberships
+  has_many :team_memberships, conditions: { invitation_accepted: true }
   has_many :users, through: :team_memberships
   has_many :issues
 

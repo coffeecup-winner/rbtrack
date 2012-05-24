@@ -41,3 +41,10 @@ def create_project(name, user)
   fill_in 'Name', with: name
   click_button 'Create project'
 end
+
+def invite(project, user)
+  visit project_path(project)
+  click_link 'Invite a user'
+  fill_in 'Email', with: user.email
+  click_button 'Send invitation'
+end

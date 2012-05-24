@@ -7,7 +7,9 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(params[:project])
     if @project.save
-      TeamMembership.create(project: @project, user: current_user, owner: true)
+      membership = TeamMembership.new(project: @project, user: current_user, owner: true)
+      membership.invitation_accepted = true
+      membership.save!
       flash[:success] = "Project #{@project.name} have been created."
       redirect_to @project
     else
