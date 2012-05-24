@@ -35,6 +35,10 @@ describe 'Projects authorization' do
     before do
       sign_in FactoryGirl.create(:user)
     end
+    describe 'submitting to the Projects#destroy action' do
+      before { delete project_path(project) }
+      specify { response.should redirect_to(root_path) }
+    end
     describe 'submitting to the TeamMemberships#invite action' do
       before { post invite_path(user_email: user.email, project_id: project.id) }
       specify { response.should redirect_to(root_path) }

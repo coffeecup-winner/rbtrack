@@ -1,7 +1,7 @@
 Rbtrack::Application.routes.draw do
   root to: 'static_pages#home'
   resources :users
-  resources :projects, only: [:new, :create, :show, :index]
+  resources :projects, only: [:new, :create, :show, :index, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :issues, except: :index
   match '/signup', to: 'users#new'

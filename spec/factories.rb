@@ -24,7 +24,7 @@ FactoryGirl.define do
   factory :issue do |issue|
     sequence(:subject) { |n| "Subject #{n}" }
     sequence(:description) { |n| "Description #{n}" }
-    project
+    project { FactoryGirl.create(:project_with_owner) }
     user
     issue.after_create do |i|
       i.assignee = FactoryGirl.create(:user)

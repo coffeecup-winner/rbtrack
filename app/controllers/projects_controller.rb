@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_filter :signed_in_user, only: [:new, :create, :index]
+  before_filter :correct_user, only: :destroy
 
   def new
     @project = Project.new
@@ -21,5 +22,20 @@ class ProjectsController < ApplicationController
   end
   def index
     @projects = Project.paginate(page: params[:page])
+  end
+  def destroy
+    @project = Project.find(params[:id])
+    owner = @project.owner
+    Issue.find_all_by_project_id(@project.id).each { |i| i.destroy }
+    TeamMembership.find_all_by_project_id(@project.id).each { |tm| tm.destroy }
+    @project.destroy
+    flash[:alert] = "Project #{@project.name} was deleted."
+    redirect_to owner
+  end
+
+private
+  def correct_user
+    project = Project.find(params[:id])
+    redirect_to root_path unless current_user? project.owner
   end
 end

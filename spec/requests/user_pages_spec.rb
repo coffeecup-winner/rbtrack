@@ -59,13 +59,25 @@ describe 'User pages' do
       it { should have_content('Projects (0)') }
       it { should have_link('Create new project', href: new_project_path) }
       describe 'with one project' do
+        let!(:project) { FactoryGirl.create(:project) }
         before do
-          create_project('rbtrack', user)
+          membership = TeamMembership.new(project: project, user: user, owner: true)
+          membership.invitation_accepted = true
+          membership.save!
           visit user_path(user)
         end
-        let(:project) { Project.first }
         it { should have_content('Projects (1)') }
-        it { should have_link('rbtrack', href: project_path(project)) }
+        it { should have_link(project.name, href: project_path(project)) }
+        it { should have_link('Delete', href: project_path(project), method: :delete) }
+        describe 'removing a project' do
+          before do
+            click_link 'Delete'
+          end
+          it { should have_content('Projects (0)') }
+          it { should_not have_link(project.name) }
+          specify { Project.find_by_id(project.id).should be_nil }
+          specify { TeamMembership.find_all_by_project_id(project.id).count.should == 0 }
+        end
       end
       describe 'invitations' do
         let!(:project) { FactoryGirl.create(:project_with_owner) }
