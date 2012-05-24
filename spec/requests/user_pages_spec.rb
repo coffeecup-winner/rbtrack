@@ -43,7 +43,7 @@ describe 'User pages' do
     it { should have_selector('h1', text: user.name) }
     it { should have_title(user.name) }
     describe 'projects' do
-      it { should have_selector('h2', text: 'Projects (0)') }
+      it { should have_content('Projects (0)') }
       it { should have_link('Create new project', href: new_project_path) }
       describe 'with one project' do
         before do
@@ -51,7 +51,7 @@ describe 'User pages' do
           visit user_path(user)
         end
         let(:project) { Project.first }
-        it { should have_selector('h2', text: 'Projects (1)') }
+        it { should have_content('Projects (1)') }
         it { should have_link('rbtrack', href: project_path(project)) }
       end
     end

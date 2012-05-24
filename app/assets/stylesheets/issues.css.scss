@@ -23,19 +23,17 @@ h1 #id {
   .nav {
     margin-bottom: 9px;
   }
-  .list {
-    ul {
-      list-style: none;
-      margin-left: 0;
-      li {
-        height: 18px;
-        .id {
-          color: $grayLight;
-          float: left;
-          width: 4em;
-          text-align: right;
-          margin-right: 0.35em;
-        }
+  ul.list {
+    list-style: none;
+    margin-left: 0;
+    li {
+      height: 18px;
+      .id {
+        color: $grayLight;
+        float: left;
+        width: 4em;
+        text-align: right;
+        margin-right: 0.35em;
       }
     }
   }

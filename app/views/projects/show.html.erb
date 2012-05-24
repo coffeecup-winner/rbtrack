@@ -38,9 +38,9 @@
         <div class="control-group">
           <%= label_tag :user_email, 'Email', class: 'control-label' %>
           <div class="controls">
-            <%= text_field_tag :user_email %>
+            <%= text_field_tag :user_email, 'Email', class: 'span5' %>
             <%= hidden_field_tag :project_id, @project.id %>
-            <%= submit_tag 'Send invitation', class: 'btn btn-primary' %>
+            <%= submit_tag 'Send invitation', class: 'btn btn-primary btn-large' %>
           </div>
         </div>
       <% end %>

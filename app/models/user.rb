@@ -38,6 +38,9 @@ class User < ActiveRecord::Base
   def closed_reported_issues
     opened_issues.find_all { |issue| issue.closed? }
   end
+  def invitations
+    team_memberships.find_all { |tm| !tm.invitation_accepted? }
+  end
 
 private
   def create_remember_token

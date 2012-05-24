@@ -1,28 +1,4 @@
-@import 'bootstrap'; //TODO: bootstrap includes as a whole here and in the custom.css.scss, remove this import
-
-/* sign up form */
-
-input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
-  width: 100%;
-  padding: 10px;
-  height: auto;
-  margin-bottom: 15px;
-  @include box-sizing(border-box);
-}
-
-#error-explanation {
-  color: red;
-  ul {
-    list-style: none;
-    margin: 0 0 10px 0;
-  }
-}
-
-.field_with_errors {
-  @extend .control-group;
-  @extend .error;
-}
+@import '_defines.scss';
 
 /* user page */
 
@@ -48,24 +24,25 @@ aside {
   }
 }
 
-#projects-list {
+#user-projects {
   h2 { float: left; }
   .btn { float: right; }
-  div.list {
-    clear: both;
-    border-top: 1px solid $grayLight;
-    border-bottom: 1px solid $grayLight;
-    margin: 10px 0;
-    ul {
-      list-style: none;
-      margin: 0;
-      li {
-        border-bottom: 1px solid $grayLighter;
-        padding: 5px 0;
-        &:last-child {
-          border-bottom: none;
-        }
+  .new-project { margin-top: 3px; }
+  .nav { margin-bottom: 9px; }
+  margin-bottom: 20px;
+  ul.list {
+    margin-left:0;
+    list-style: none;
+    li {
+      border-bottom: 1px solid $grayLighter;
+      padding: 0 0 5px;
+      margin: 5px 0 0;
+      &:last-child {
+        border-bottom: none;
       }
+    }
+    .invitation-action-link {
+      float: none;
     }
   }
 }
@@ -83,9 +60,6 @@ aside {
   li {
     overflow: auto;
     padding: 10px 0;
-    border-top: 1px solid $grayLighter;
-    &:last-child {
-      border-bottom: 1px solid $grayLighter;
-    }
+    border-bottom: 1px solid $tableBorder;
   }
 }
