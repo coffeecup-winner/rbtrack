@@ -7,11 +7,13 @@ class CreateIssues < ActiveRecord::Migration
       t.string :subject
       t.text :description
       t.integer :status
+      t.integer :priority
 
       t.timestamps
     end
     add_index :issues, :project_id
     add_index :issues, :user_id
     add_index :issues, :assignee_id
+    add_index :issues, :priority
   end
 end
