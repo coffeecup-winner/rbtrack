@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'Issues' do
@@ -52,6 +54,7 @@ describe 'Issues' do
     it { should have_content(Status.to_string(issue.status)) }
     it { should have_content(Priority.to_string(issue.priority)) }
     it { should have_content(issue.description) }
+    it { should have_link('← to project', href: project_path(issue.project)) }
     describe 'as non-signed-in user' do
       before do
         sign_in FactoryGirl.create(:user)

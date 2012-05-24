@@ -3,15 +3,10 @@
 <div id="issue">
   <div class="row">
     <div class="span6">
-      <span id="project">Project: <%= link_to @issue.project.name, @issue.project %></span>
+      <div id="project">Project: <%= link_to @issue.project.name, @issue.project %></div>
+      <div id="user">User: <%= link_to @issue.user.name, @issue.user %></div>
     </div>
   </div>
-  <div class="row">
-    <div class="span6">
-      <span id="user">User: <%= link_to @issue.user.name, @issue.user %></span>
-    </div>
-  </div>
-  <div></div>
   <div class="row">
     <div class="span12">
       Status: <%= render 'shared/issue_status_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %>
@@ -75,5 +70,6 @@
         <%= link_to 'Remove issue', issue_path(@issue), class: 'btn btn-danger', method: :delete %>
       <% end %>
     </div>
+    <%= link_to '← to project', @issue.project, class: 'btn' %>
   </div>
 </div>
