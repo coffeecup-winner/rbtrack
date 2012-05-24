@@ -20,7 +20,7 @@
                 <% if project_id.nil? %>
                   (<%= link_to issue.project.name, issue.project %>)
                 <% end %>
-                <%= link_to issue.subject, issue %></li>
+                <%= link_to truncate(issue.subject, length: 70), issue, title: issue.subject.length > 70 ? issue.subject : '' %></li>
             <% end %>
           </ul>
         </div>

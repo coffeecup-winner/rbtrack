@@ -38,7 +38,7 @@ describe Issue do
     it { should_not be_valid }
   end
   describe 'with too long subject' do
-    before { @issue.subject = 'a' * 81 }
+    before { @issue.subject = 'a' * 101 }
     it { should_not be_valid }
   end
   describe 'without a project' do

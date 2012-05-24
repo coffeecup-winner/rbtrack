@@ -67,7 +67,7 @@ class Issue < ActiveRecord::Base
 
   attr_accessible :description, :status, :subject, :project_id
 
-  validates :subject, presence: true, length: { minimum: 8, maximum: 80 }
+  validates :subject, presence: true, length: { minimum: 8, maximum: 100 }
   validates :project_id, presence: true
   validates :user_id, presence: true
 

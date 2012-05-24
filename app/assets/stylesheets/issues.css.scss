@@ -2,8 +2,11 @@
 
 /* issue page */
 
-h1 #id {
-  color: $grayLight;
+h1 {
+  word-wrap: break-word;
+  #id {
+    color: $grayLight;
+  }
 }
 
 #issue-actions {
@@ -34,6 +37,9 @@ h1 #id {
         width: 4em;
         text-align: right;
         margin-right: 0.35em;
+      }
+      .issue-link {
+        word-wrap: break-word;
       }
     }
   }
