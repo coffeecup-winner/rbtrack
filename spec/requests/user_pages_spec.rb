@@ -82,6 +82,15 @@ describe 'User pages' do
           specify { user.projects.should_not include(project) }
           specify { TeamMembership.find_by_user_id(user.id).should be_nil }
         end
+        describe 'as other user' do
+          before do
+            sign_in FactoryGirl.create(:user)
+            visit user_path(user)
+          end
+          it { should_not have_link(project.name, href: project_path(project)) }
+          it { should_not have_link 'Accept', href: accept_invitation_path(id: invitation.id), method: :put }
+          it { should_not have_link 'Reject', href: reject_invitation_path(id: invitation.id), method: :put }
+        end
       end
     end
   end

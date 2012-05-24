@@ -12,7 +12,7 @@
     <div class="tabbable" id="user-projects">
       <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#projects">Projects <%= content_tag :span, "(#{@user.projects.count})", class: 'count' %></a></li>
-        <% if @user.invitations.any? %>
+        <% if current_user?(@user) && @user.invitations.any? %>
           <li><a data-toggle="tab" href="#invitations">Invitations <%= content_tag :span, "(#{@user.invitations.count})", class: 'count' %></a></li>
         <% end %>
         <span class='new-project'><%= link_to 'Create new project', new_project_path, class:'btn btn-primary new-project' %></span>
@@ -25,17 +25,19 @@
             <% end %>
           </ul>
         </div>
-        <div id="invitations" class="tab-pane">
-          <ul class="list">
-            <% @user.invitations.each do |invitation| %>
-              <li>
-                <%= link_to invitation.project.name, invitation.project, class: 'invitation-project-link' %>
-                <%= link_to 'Accept', accept_invitation_path(id: invitation.id), method: :put, class: 'btn btn-success invitation-action-link' %>
-                <%= link_to 'Reject', reject_invitation_path(id: invitation.id), method: :put, class: 'btn btn-danger invitation-action-link' %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
+        <% if current_user?(@user) && @user.invitations.any? %>
+          <div id="invitations" class="tab-pane">
+            <ul class="list">
+              <% @user.invitations.each do |invitation| %>
+                <li>
+                  <%= link_to invitation.project.name, invitation.project, class: 'invitation-project-link' %>
+                  <%= link_to 'Accept', accept_invitation_path(id: invitation.id), method: :put, class: 'btn btn-success invitation-action-link' %>
+                  <%= link_to 'Reject', reject_invitation_path(id: invitation.id), method: :put, class: 'btn btn-danger invitation-action-link' %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
       </div>
     </div>
     <div>
