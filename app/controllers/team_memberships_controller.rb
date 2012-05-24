@@ -1,5 +1,6 @@
 class TeamMembershipsController < ApplicationController
   before_filter :team_member, only: :invite
+  before_filter :correct_user, only: [ :accept_invitation, :reject_invitation ]
 
   def invite
     email = params[:user_email]
@@ -42,5 +43,9 @@ private
   def team_member
     project = Project.find_by_id(params[:project_id])
     redirect_to root_path unless project && (project.users.include? current_user)
+  end
+  def correct_user
+    team_membership = TeamMembership.find(params[:id])
+    redirect_to root_path unless current_user? team_membership.user
   end
 end

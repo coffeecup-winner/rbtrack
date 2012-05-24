@@ -100,6 +100,18 @@ describe 'Authentication' do
         before { put user_path(wrong_user) }
         specify { response.should redirect_to(root_path) }
       end
+      describe 'invitations' do
+        let(:project) { FactoryGirl.create(:project_with_owner) }
+        let(:invitation) { TeamMembership.create(project: project, user: FactoryGirl.create(:user)) }
+        describe 'submitting a PUT request to the TeamMemberships#accept_invitation' do
+          before { put accept_invitation_path(id: invitation.id) }
+          specify { response.should redirect_to(root_path) }
+        end
+        describe 'submitting a PUT request to the TeamMemberships#reject_invitation' do
+          before { put reject_invitation_path(id: invitation.id) }
+          specify { response.should redirect_to(root_path) }
+        end
+      end
     end
     describe 'as non-admin user' do
       let(:user) { FactoryGirl.create(:user) }
