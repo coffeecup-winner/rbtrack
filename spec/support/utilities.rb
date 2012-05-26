@@ -53,3 +53,9 @@ def invite(project, user)
   fill_in 'Email', with: user.email
   click_button 'Send invitation'
 end
+
+def search(text)
+  visit search_path
+  fill_in 'query', with: text
+  click_button 'Search'
+end
