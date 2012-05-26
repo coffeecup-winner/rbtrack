@@ -3,6 +3,10 @@
     <div class="container">
       <%= link_to 'rbTrack', root_path, id: 'logo' %>
       <nav>
+        <ul class="nav pull-left">
+          <li class="divider-vertical"></li>
+          <li><%= render 'shared/search_form', options: { inline: true } %></li>
+        </ul>
         <ul class="nav pull-right">
           <li><%= link_to 'Home', root_path %></li>
           <% if signed_in? %>

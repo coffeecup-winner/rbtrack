@@ -19,4 +19,14 @@ describe SearchController do
       it { should have_link(issue.project.name, href: project_path(issue.project)) }
     end
   end
+  describe 'navbar search form' do
+    let!(:issue) { FactoryGirl.create(:issue) }
+    before do
+      visit root_path
+      fill_in 'query-inline', with: issue.subject
+      click_button 'search-inline'
+    end
+    it { should have_link(issue.subject, href: issue_path(issue)) }
+    it { should have_link(issue.project.name, href: project_path(issue.project)) }
+  end
 end

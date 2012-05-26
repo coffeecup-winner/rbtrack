@@ -1,7 +1,9 @@
-<%= form_tag search_path, method: :get, class: 'form-search' do %>
-  <%= text_field_tag :query, params[:query], class: main_page ? 'search-query span9' : 'search-query span11' %>
-  <%= submit_tag 'Search', name: nil, class: 'btn btn-large' %>
+<% query_id = "query#{'-inline' if options[:inline]}" %>
+<% search_id = "search#{'-inline' if options[:inline]}" %>
+<%= form_tag search_path, method: :get, class: "#{options[:inline] ? 'navbar-search form-search-inline' : 'form-search'}" do %>
+  <%= text_field_tag :query, params[:query], id: query_id, class: "search-query #{get_query_class(options)}" %>
+  <%= submit_tag 'Search', id: search_id, name: nil, class: "btn #{options[:inline] ? 'btn-mini btn-inverse' : 'btn-large'}" %>
   <script type="text/javascript">
-    $('form input#query').Watermark('Search for projects or issues')
+    $('form input#<%= query_id %>').Watermark('Search for projects or issues')
   </script>
 <% end %>

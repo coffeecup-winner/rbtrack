@@ -1,5 +1,5 @@
 <h1>Search results for <%= @query %></h1>
-<%= render 'shared/search_form', main_page: false %>
+<%= render 'shared/search_form', options: {} %>
 <h2 class="search-results-header">Projects <%= content_tag :span, "(#{@projects.count})", class: 'count' %></h2>
 <ul class="search-results">
   <% @projects.each do |project| %>

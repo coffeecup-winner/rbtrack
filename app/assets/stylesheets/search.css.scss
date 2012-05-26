@@ -1,4 +1,10 @@
 
+/* search form */
+
+.form-search {
+  margin-top: 20px;
+}
+
 .search-results-header {
   color: black;
   text-align: left;
@@ -6,4 +12,24 @@
 
 .search-results {
   list-style: none;
+}
+
+.form-search-inline {
+  margin: 9px 0;
+  width: auto;
+  float: right;
+  #query-inline {
+    width: 300px;
+    padding: 0 5px;
+    height: 20px;
+    color: white;
+  }
+  #search-inline {
+    margin: 1px 0 0;
+  }
+}
+
+.navbar-search .search-query:focus, .navbar-search .search-query.focused {
+  background: #626262;
+  text-shadow: none;
 }
