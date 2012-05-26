@@ -96,6 +96,12 @@ input, textarea, select, .uneditable-input {
   @extend .error;
 }
 
+/* search form */
+
+.form-search {
+  margin-top: 20px;
+}
+
 /* misc app-wide used classes */
 
 .count {
@@ -119,12 +125,6 @@ input, textarea, select, .uneditable-input {
     line-height: 18px !important;
   }
 }
-
-/* @-moz-document url-prefix() {
-  .label-badge {
-    padding: 1px 1px 0px !important;
-  }
-} */
 
 /* debug */
 

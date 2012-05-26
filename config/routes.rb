@@ -10,6 +10,7 @@ Rbtrack::Application.routes.draw do
   match '/invite', to: 'TeamMemberships#invite', via: :post
   match '/accept_invitation', to: 'TeamMemberships#accept_invitation', via: :put
   match '/reject_invitation', to: 'TeamMemberships#reject_invitation', via: :put
+  match '/search', to: 'search#search'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
