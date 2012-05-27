@@ -118,6 +118,18 @@ describe 'User pages' do
         end
       end
     end
+    describe 'issues' do
+      describe 'assigned' do
+        let!(:issue) { FactoryGirl.create(:issue) }
+        before do
+          TeamMembership.create!(project: issue.project, user: user)
+          issue.assignee = user
+          issue.save!
+          visit user_path(user)
+        end
+        it { should have_link(issue.subject, href: issue_path(issue)) }
+      end
+    end
   end
   describe 'Edit' do
     let(:user) { FactoryGirl.create(:user) }

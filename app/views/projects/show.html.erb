@@ -23,8 +23,7 @@
     </div>
   </aside>
   <div class="span8">
-    <%= render 'shared/issues_list',
-               project_id: @project.id,
+    <%= render 'shared/issues_list', project_id: @project.id, new_issue_button: true,
                issues_lists: [ { issues: @project.active_issues, header: 'Active' },
                                { issues: @project.closed_issues, header: 'Closed' } ] %>
   </div>

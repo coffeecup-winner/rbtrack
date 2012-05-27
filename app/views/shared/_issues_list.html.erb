@@ -7,7 +7,7 @@
         </li>
       <% end %>
       <!-- TODO refactor this, span should not be inside ul -->
-      <% if current_user?(@user) || !project_id.nil? %>
+      <% if new_issue_button && (current_user?(@user) || !project_id.nil?) %>
         <span class='new-issue'><%= link_to 'Report an issue', new_issue_path(project: project_id), class:'btn btn-primary' %></span>
       <% end %>
     </ul>
