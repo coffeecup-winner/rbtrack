@@ -29,10 +29,8 @@ class IssuesController < ApplicationController
     @issue = Issue.find(params[:id])
   end
   def edit
-    @issue = Issue.find(params[:id])
   end
   def update
-    @issue = Issue.find(params[:id])
     if params[:set_status]
       set_issue_status(params[:set_status])
       redirect_to @issue

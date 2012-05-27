@@ -24,7 +24,6 @@ class ProjectsController < ApplicationController
     @projects = Project.paginate(page: params[:page])
   end
   def destroy
-    @project = Project.find(params[:id])
     owner = @project.owner
     Issue.find_all_by_project_id(@project.id).each { |i| i.destroy }
     TeamMembership.find_all_by_project_id(@project.id).each { |tm| tm.destroy }
@@ -35,7 +34,7 @@ class ProjectsController < ApplicationController
 
 private
   def correct_user
-    project = Project.find(params[:id])
-    redirect_to root_path unless current_user? project.owner
+    @project = Project.find(params[:id])
+    redirect_to root_path unless current_user? @project.owner
   end
 end
