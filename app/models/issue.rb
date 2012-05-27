@@ -63,6 +63,7 @@ class Issue < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   belongs_to :assignee, class_name: 'User'
+  has_many :comments
   default_scope order: 'issues.priority DESC, issues.created_at DESC'
 
   attr_accessible :description, :status, :subject, :project_id
