@@ -55,7 +55,10 @@ describe 'Issues' do
     it { should have_content(Priority.to_string(issue.priority)) }
     it { should have_content(issue.description) }
     it { should have_link('← to project', href: project_path(issue.project)) }
-    describe 'as non-signed-in user' do
+    it { should_not have_link('Assign ...') }
+    it { should_not have_link('to me') }
+    it { should_not have_css('#assign-issue-modal') }
+    describe 'as signed-in user' do
       before do
         sign_in FactoryGirl.create(:user)
         visit issue_path(issue)
@@ -68,6 +71,9 @@ describe 'Issues' do
       it { should_not have_link('Fixed') }
       it { should_not have_link('By design') }
       it { should_not have_link('Won\'t fix') }
+      it { should_not have_link('Assign ...') }
+      it { should_not have_link('to me') }
+      it { should_not have_css('#assign-issue-modal') }
       it { should_not have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
       it { should_not have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
       it { should_not have_link(Priority.to_string(Priority::NORMAL), href: issue_path(issue, set_priority: Priority::NORMAL), method: :put) }
@@ -87,6 +93,9 @@ describe 'Issues' do
       it { should_not have_link('Fixed') }
       it { should_not have_link('By design') }
       it { should_not have_link('Won\'t fix') }
+      it { should_not have_link('Assign ...') }
+      it { should_not have_link('to me') }
+      it { should_not have_css('#assign-issue-modal') }
       it { should_not have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
       it { should_not have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
       it { should_not have_link(Priority.to_string(Priority::NORMAL), href: issue_path(issue, set_priority: Priority::NORMAL), method: :put) }
@@ -118,8 +127,8 @@ describe 'Issues' do
       end
     end
     describe 'as a member of the project team' do
+      let!(:team_member) { FactoryGirl.create(:user) }
       before do
-        team_member = FactoryGirl.create(:user)
         membership = TeamMembership.new(project: issue.project, user: team_member)
         membership.invitation_accepted = true
         membership.save!
@@ -131,6 +140,9 @@ describe 'Issues' do
       it { should have_link('Fixed') }
       it { should have_link('By design') }
       it { should have_link('Won\'t fix') }
+      it { should have_link('Assign ...', href: '#assign-issue-modal') }
+      it { should have_link('to me') }
+      it { should have_css('#assign-issue-modal') }
       it { should have_link(Priority.to_string(Priority::LOWEST), href: issue_path(issue, set_priority: Priority::LOWEST), method: :put) }
       it { should have_link(Priority.to_string(Priority::LOW), href: issue_path(issue, set_priority: Priority::LOW), method: :put) }
       it { should have_link(Priority.to_string(Priority::NORMAL), href: '#') }
@@ -217,6 +229,27 @@ describe 'Issues' do
             visit issue_path(issue)
           end
           specify { expect { change_priority_to Priority::NORMAL }.to change(issue, :priority).to(Priority::NORMAL) }
+        end
+      end
+      describe 'assign' do
+        before do
+          issue.assignee = nil
+          issue.save!
+        end
+        describe 'to project owner' do
+          before do
+            choose "user_id_#{issue.project.owner.id}"
+            click_button 'Assign'
+          end
+          specify { issue.reload.assignee.should == issue.project.owner }
+        end
+        describe 'to oneself' do
+          before { click_link 'to me' }
+          specify { issue.reload.assignee.should == team_member }
+          describe 'to nobody' do
+            before { click_link 'Assign to nobody' }
+            specify { issue.reload.assignee.should be_nil }
+          end
         end
       end
     end

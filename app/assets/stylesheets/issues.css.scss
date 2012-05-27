@@ -44,3 +44,22 @@ h1 {
     }
   }
 }
+
+/* assign issue modal */
+
+#assign-issue-modal {
+  ul {
+    list-style: none;
+    margin-left: 0;
+    li {
+      line-height: 32px;
+    }
+  }
+  .gravatar {
+    float: none;
+    margin: 0;
+  }
+  label {
+    display: inline;
+  }
+}

@@ -45,6 +45,14 @@ class IssuesController < ApplicationController
       render :edit
     end
   end
+  def assign
+    @issue = Issue.find(params[:id])
+    user = User.find_by_id(params[:user_id])
+    @issue.assignee = user
+    @issue.save!
+    flash[:success] = "Assigned issue ##{params[:id]} to #{user ? user.name : 'nobody'}"
+    redirect_to @issue
+  end
   def destroy
     issue = Issue.find(params[:id])
     issue.destroy

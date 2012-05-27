@@ -5,16 +5,14 @@
     <div class="span6">
       <div id="project">Project: <%= link_to @issue.project.name, @issue.project %></div>
       <div id="user">User: <%= link_to @issue.user.name, @issue.user %></div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span12">
-      Status: <%= render 'shared/issue_status_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span6">
-      Priority: <%= render 'shared/issue_priority_badge', priority: @issue.priority, tooltip: false %> <%= Priority.to_string @issue.priority %>
+      <div>Assignee: <%= @issue.assignee ? (link_to @issue.assignee.name, @issue.assignee) : 'nobody' %>
+        <% if @issue.project.users.include? current_user %>
+          <%= link_to 'Assign ...', '#assign-issue-modal', class: 'btn btn-mini', 'data-toggle' => 'modal' %>
+          <%= link_to 'to me', assign_path(id: @issue.id, user_id: current_user.id), method: :put, class: 'btn btn-mini' %>
+        <% end %>
+      </div>
+      <div>Status: <%= render 'shared/issue_status_badge', status: @issue.status, tooltip: false %> <%= Status.to_string @issue.status %></div>
+      <div>Priority: <%= render 'shared/issue_priority_badge', priority: @issue.priority, tooltip: false %> <%= Priority.to_string @issue.priority %></div>
       <% if @issue.project.users.include?(current_user) %>
         <!-- TODO: fix layout here -->
         <div class="btn-group">
@@ -73,3 +71,29 @@
     <%= link_to '← to project', @issue.project, class: 'btn' %>
   </div>
 </div>
+<% if @issue.project.users.include? current_user %>
+  <!-- assign issue modal -->
+  <div class="modal" id="assign-issue-modal" style="display: none;">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <h3>Assign this issue</h3>
+    </div>
+    <div class="modal-body">
+      <%= form_tag assign_path, method: :put do %>
+        <ul>
+          <%= hidden_field_tag :id, @issue.id %>
+          <% @issue.project.users.each do |user| %>
+            <li><%= radio_button_tag 'user_id', user.id, user == @issue.assignee %>
+            <%= gravatar_for user, size: 32 %>
+            <%= label_tag "user_id_#{user.id}", user.name %></li>
+          <% end %>
+        </ul>
+        <%= submit_tag 'Assign', class: 'btn btn-primary btn-large' %>
+      <% end %>
+    </div>
+    <div class="modal-footer">
+      <%= link_to 'Assign to nobody', assign_path(id: @issue.id, user_id: 0), method: :put, class: 'btn' %>
+      <a href="#" class="btn" onclick="$('#assign-issue-modal').modal('hide')">Close</a>
+    </div>
+  </div>
+<% end %>
