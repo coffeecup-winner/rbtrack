@@ -22,8 +22,12 @@
                 <% if project_id.nil? %>
                   (<%= link_to issue.project.name, issue.project %>)
                 <% end %>
-                <% max_length = project_id.nil? ? 60 : 70 %>
-                <%= link_to truncate(issue.subject, length: max_length), issue, title: issue.subject.length > max_length ? issue.subject : '' %></li>
+                <% max_length = 60 %>
+                <%= link_to truncate(issue.subject, length: max_length), issue, title: issue.subject.length > max_length ? issue.subject : '' %>
+                <% unless project_id.nil? %>
+                  (<%= issue.assignee.nil? ? 'nobody' : (link_to issue.assignee.name, issue.assignee) %>)
+                <% end %>
+              </li>
             <% end %>
           </ul>
         </div>
