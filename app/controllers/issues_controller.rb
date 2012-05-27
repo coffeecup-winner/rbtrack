@@ -1,6 +1,7 @@
 class IssuesController < ApplicationController
   before_filter :signed_in_user, except: :show
   before_filter :correct_user, only: [:edit, :update]
+  before_filter :correct_assign, only: :assign
   before_filter :admin_user, only: :destroy
 
   def new
@@ -46,11 +47,9 @@ class IssuesController < ApplicationController
     end
   end
   def assign
-    @issue = Issue.find(params[:id])
-    user = User.find_by_id(params[:user_id])
-    @issue.assignee = user
+    @issue.assignee = @user
     @issue.save!
-    flash[:success] = "Assigned issue ##{params[:id]} to #{user ? user.name : 'nobody'}"
+    flash[:success] = "Assigned issue ##{params[:id]} to #{@user ? @user.name : 'nobody'}"
     redirect_to @issue
   end
   def destroy
@@ -97,5 +96,11 @@ private
       end
     end
     redirect_to(root_path) unless current_user?(@issue.user) || @issue.project.users.include?(current_user) || current_user.admin?
+  end
+  def correct_assign
+    @issue = Issue.find(params[:id])
+    @user = User.find_by_id(params[:user_id])
+    redirect_to(root_path) unless @user.nil? || @issue.project.users.include?(@user)
+    redirect_to(root_path) unless @issue.project.users.include?(current_user)
   end
 end

@@ -22,6 +22,10 @@ describe 'Issues authorization' do
         before { put issue_path(issue) }
         specify { response.should redirect_to(signin_path) }
       end
+      describe 'submittinh to the Issues#assign action' do
+        before { put assign_path(id: issue, user_id: issue.project.owner.id) }
+        specify { response.should redirect_to(signin_path) }
+      end
       describe 'submitting to the Issues#destroy action' do
         before { delete issue_path(issue) }
         specify { response.should redirect_to(signin_path) }
@@ -44,6 +48,10 @@ describe 'Issues authorization' do
       end
       describe 'submitting to the Issues#update action' do
         before { put issue_path(issue) }
+        specify { response.should redirect_to(root_path) }
+      end
+      describe 'submitting to the Issues#assign action' do
+        before { put assign_path(id: issue, user_id: issue.project.owner.id) }
         specify { response.should redirect_to(root_path) }
       end
       describe 'submitting to the Issues#destroy action' do
@@ -87,6 +95,18 @@ describe 'Issues authorization' do
         before { put issue_path(issue, set_priority: Priority::HIGH) }
         specify { response.should redirect_to(issue_path(issue)) }
       end
+      describe 'submitting to the Issues#assign action' do
+        before { put assign_path(id: issue, user_id: issue.project.owner.id) }
+        specify { response.should redirect_to(issue_path(issue)) }
+      end
+      describe 'assigning nobody' do
+        before { put assign_path(id: issue, user_id: 0) }
+        specify { response.should redirect_to(issue_path(issue)) }
+      end
+      describe 'trying to assign not a team member' do
+        before { put assign_path(id: issue, user_id: FactoryGirl.create(:user).id) }
+        specify { response.should redirect_to(root_path) }
+      end
       describe 'submitting to the Issues#destroy action' do
         before { delete issue_path(issue) }
         specify { response.should redirect_to(root_path) }
@@ -118,6 +138,10 @@ describe 'Issues authorization' do
         before { put issue_path(issue, set_status: Status::WONT_FIX) }
         specify { response.should redirect_to(root_path) }
       end
+      describe 'submitting to the Issues#assign action' do
+        before { put assign_path(id: issue, user_id: issue.project.owner.id) }
+        specify { response.should redirect_to(root_path) }
+      end
       describe 'submitting to the Issues#update action, set_priority' do
         before { put issue_path(issue, set_priority: Priority::HIGH) }
         specify { response.should redirect_to(root_path) }
@@ -139,6 +163,10 @@ describe 'Issues authorization' do
       end
       describe 'submitting to the Issues#update action, set_priority' do
         before { put issue_path(issue, set_priority: Priority::HIGH) }
+        specify { response.should redirect_to(root_path) }
+      end
+      describe 'submitting to the Issues#assign action' do
+        before { put assign_path(id: issue, user_id: issue.project.owner.id) }
         specify { response.should redirect_to(root_path) }
       end
       describe 'submitting to the Issues#destroy action' do
