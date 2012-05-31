@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_filter :signed_in_user 
+  
   def create
     @comment = current_user.comments.build(params[:comment])
     if @comment.save
@@ -9,10 +11,5 @@ class CommentsController < ApplicationController
       render 'issues/show'
       #redirect_to @comment.issue
     end
-  end
-  def update
-  end
-
-  def destroy
   end
 end

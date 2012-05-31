@@ -4,7 +4,7 @@ Rbtrack::Application.routes.draw do
   resources :projects, only: [:new, :create, :show, :index, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
   resources :issues, except: :index
-  resources :comments, only: [:create, :update, :destroy]
+  resources :comments, only: [:create]
   match '/assign', to: 'issues#assign', via: :put
   match '/signup', to: 'users#new'
   match '/signin', to: 'sessions#new'
