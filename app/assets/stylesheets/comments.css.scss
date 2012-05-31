@@ -17,4 +17,24 @@
   .new-comment-form {
     margin-top: 5px;
   }
+  .comment {
+    background-color: #F5F5F5;
+    margin: 0 0 5px;
+    border: 1px solid $tableBorder;
+    -moz-border-radius: 0px 4px 4px 4px;
+    border-radius: 0px 4px 4px 4px;
+    .header {
+      .gravatar {
+        margin-right: 5px;
+      } 
+      border-bottom: 1px solid $tableBorder;
+    }
+    .timestamp {
+      display: block;
+      color: $grayLight;
+    }
+    p {
+      margin: 2px 5px;
+    }
+  }
 }

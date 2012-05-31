@@ -1,4 +1,5 @@
 .idea
+.project
 bundler_stubs/
 *.rbc
 *.sassc

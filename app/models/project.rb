@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
     @owner ||= team_memberships.find_by_owner(true).user
   end
   def self.names
-    Project.all.map &:name
+    Project.all.map(&:name)
   end
   def active_issues
     issues.find_all { |issue| !issue.closed? }
