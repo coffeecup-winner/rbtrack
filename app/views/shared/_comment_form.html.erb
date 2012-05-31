@@ -1,0 +1,8 @@
+<div class="new-comment-form">
+  <%= form_for @comment do |form| %>
+    <%= render 'shared/error_messages', object: form.object %>
+    <%= hidden_field_tag 'comment[issue_id]', @issue.id %>
+    <%= form.text_area :message, rows: 3 %>
+    <%= form.submit 'Comment on this issue', class: 'btn btn-large btn-primary' %>
+  <% end %>
+</div>

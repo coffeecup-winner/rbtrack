@@ -70,6 +70,27 @@
     </div>
     <%= link_to '← to project', @issue.project, class: 'btn' %>
   </div>
+  <section class="comments">
+    <div class="comments-header">
+      Comments <%= content_tag :span, "(#{@issue.comments.count})", class: 'count' %>
+    </div>
+    <% if @issue.comments.any? %>
+      <% @issue.comments.each do |comment| %>
+        <div class="comment">
+          <div class="header">
+            <%= gravatar_for comment.user, size: 32 %>
+            <%= link_to comment.user.name, comment.user %>
+          </div>
+          <div class="body">
+            <%= comment.message %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <% if signed_in? %>
+      <%= render 'shared/comment_form' %>
+    <% end %>
+  </section>
 </div>
 <% if @issue.project.users.include? current_user %>
   <!-- assign issue modal -->

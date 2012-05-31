@@ -27,6 +27,7 @@ class IssuesController < ApplicationController
   end
   def show
     @issue = Issue.find(params[:id])
+    @comment = current_user.comments.build if signed_in?
   end
   def edit
   end
